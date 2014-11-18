@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.games.mrharpreets.wtm" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Gurbani Bodh</name>
+    <description>
+        A simple quiz based application to understand meaning of Gurbani words and lines.
+    </description>
+    <author email="mrharpreets@gmail.com" href="http://cordova.io">
+        Harpreet Singh
+    </author>
+    <content src="index.html" />
+    <access origin="127.0.0.1" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="KeepRunning" value="false"/>
+    <!--preference name="LoadingDialog" value="My Title,My Message"-->
+    <preference name="AndroidLaunchMode" value="singleInstance"/>
+
+</widget>

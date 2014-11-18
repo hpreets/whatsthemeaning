@@ -1,0 +1,35 @@
+<div class="container">
+    <style>
+table, th, td {
+    border: 1px solid black;
+    background-color:#FFFFFF;
+}
+    </style>
+	<div class="bar bar-header bar-positive">
+		<button class="button" data-ng-click="home()">Home</button>
+		<div class="title">Score</div>
+	</div>
+	<br/><br/>
+    <div class="content padding text-center">
+		
+		<table border="1" style="border: 1px solid black">
+			<tr ng-repeat="option in allOptions">
+				<td>{{option.Id}}</td>
+				<td class="punj-medium">{{option.wordPunj}}</td>
+				<td>{{option.wordEng}}</td>
+				<td class="punj-medium">{{option.ansPunj}}</td>
+				<td>{{option.ansEng}}</td>
+				<td class="punj-medium">{{option.opAPunj}}</td>
+				<td>{{option.opAEng}}</td>
+				<td class="punj-medium">{{option.opBPunj}}</td>
+				<td>{{option.opBEng}}</td>
+				<td class="punj-medium">{{option.opCPunj}}</td>
+				<td>{{option.opCEng}}</td>
+				<td class="punj-medium">{{option.opDPunj}}</td>
+				<td>{{option.opDEng}}</td>
+			</tr>
+		</table>
+    </div>
+</div>
+
+

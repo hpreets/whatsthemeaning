@@ -1,0 +1,31 @@
+<div class="container" ng-swipe-left="restart()">
+	<div class="bar bar-header bar-positive">
+		<button class="button" data-ng-click="home()">Home</button>
+		<div class="title">Scoreboard</div>
+		<button class="button" data-ng-click="restart()">Play Again</button>
+	</div>
+	<br/><br/>
+    <div class="content padding text-center">
+        <div class="font-large">
+            {{score}}
+        </div>
+        {{feedback}}<hr/>
+        Review All Answers
+	    <div class="text-center" ng-repeat="ques in allQuiz" style="background-color:{{(success.indexOf(ques.Id) >= 0) && 'green' || 'red' }}">
+			<div class="card">
+		        <div class="item item-text-wrap padding">
+			        <span class="punj-medium" style="line-height:1.3; font-family: GurbaniAkhar">
+					{{ques.quesPunj}}
+				</span>
+				<br />{{ques.quesEng}}
+			    </div>
+		        <div class="item item-text-wrap font-large">
+			        <span class="punj-large">{{ques.qOpt.wordPunj}} : {{ques.qOpt.ansPunj}}</span><br />
+                                {{ques.qOpt.wordEng}} : {{ques.qOpt.ansEng}}
+		        </div>
+		        <p class="punj-medium padding">{{ques.explPunj}}</p>
+		        <p>{{ques.explEng}}</p>
+			</div>
+	    </div>
+    </div>
+</div>

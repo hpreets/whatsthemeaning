@@ -1,0 +1,50 @@
+<div class="container">
+    <style>
+table, th, td {
+    border: 1px solid black;
+    background-color:#FFFFFF;
+}
+    </style>
+	<div class="bar bar-header bar-positive">
+		<button class="button" data-ng-click="home()">Home</button>
+		<div class="title">Score</div>
+	</div>
+	<br/><br/>
+    <div class="content padding text-center">
+		
+        <!-- table border="1">
+			<tr ng-repeat-start="ques in allQues"><td class="punj-medium">{{ques.quesPunj}}</td></tr>
+			<tr><td>{{ques.explEng}}</td></tr>
+			<tr><td class="punj-medium">{{ques.wordPunj}}-{{ques.ansPunj}} [ {{ques.explPunj}}</td></tr>
+			<tr ng-repeat-end><td><hr /></td></tr>
+		</table>
+	    <div class="text-center" ng-repeat="ques in allQues">
+			<div class="card">
+		        <div class="item item-text-wrap punj-medium padding" style="line-height:1.2">
+			        {{ques.quesPunj}}
+			    </div>
+		        <div class="item item-text-wrap font-large">
+			        <span class="punj-large">{{ques.wordPunj}}</span> : 
+			        <span class="">{{ques.ansEng}}</span> (<span class="punj-large">{{ques.ansPunj}}</span>)
+		        </div>
+		        <p>&nbsp;</p>
+		        <p>{{ques.explEng}}</p>
+		        <p class="punj-medium padding">{{ques.explPunj}}</p>
+			</div>
+	        < !-- button class="button button-block button-positive" ng-show="!isComplete" data-ng-click="go('/ques')">Next Question</button>
+	        <button class="button button-block button-positive" ng-show="isComplete" data-ng-click="go('/score')">Score</button - - >
+	    </div -->
+
+
+		<table border="1" style="border: 1px solid black">
+			<tr ng-repeat="ques in allQues">
+				<td class="punj-medium">{{ques.quesPunj}}</td>
+				<td>{{ques.quesEng}}</td>
+				<td class="punj-medium">{{ques.explPunj}}</td>
+				<td>{{ques.explEng}}</td>
+			</tr>
+		</table>
+    </div>
+</div>
+
+

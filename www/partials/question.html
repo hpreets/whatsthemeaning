@@ -1,0 +1,36 @@
+<div class="container">
+	<div class="bar bar-header bar-positive">
+		<button class="button" data-ng-click="home()">Home</button>
+		<div class="title">Question [{{progressText}}]</div>
+	</div>
+    <div class="text-center" style="padding-top:35px">
+		<div class="card">
+			<div class="item item-text-wrap item-ques-page">
+				<span class="punj-large" style="line-height:1.3; font-family: GurbaniAkhar">
+					{{questionPunjPart1}} <span style="color:red">{{wordPunj}}</span> {{questionPunjPart3}}
+				</span>
+				<br /> {{questionEngPart1}} <span style="color:red">{{wordEng}}</span> {{questionEngPart3}}
+			</div>
+			<div class="item item-text-wrap item-ques-page" style="font-size:24px">
+				<span class="punj-x-large">{{wordPunj}}</span> / {{wordEng}}
+			</div>
+		</div>
+	    <!-- div class="">
+	        <ul class="list list-inset">
+	            <li class="item item-stable fill-icon item-icon-left padding"><i class="icon ion-star"></i><a ng-click="go('ans/' + ques.Id + '/' + ques.opAEng)"><h2>{{ques.opAEng}}</h2></a></li>
+	            <li class="item item-stable item-icon-left padding"><a ng-click="go('ans/' + ques.Id + '/' + ques.opBEng)"><h2 class="white-text">{{ques.opBEng}}</h2></a></li>
+	            <li class="item item-stable item-icon-left padding"><a ng-click="go('ans/' + ques.Id + '/' + ques.opCEng)"><h2>{{ques.opCEng}}</h2></a></li>
+	            <li class="item item-stable item-icon-left padding"><a ng-click="go('ans/' + ques.Id + '/' + ques.opDEng)"><h2 class="white-text">{{ques.opDEng}}</h2></a></li>
+	        </ul>
+	    </div -->
+	    <div class="padding">
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click="go('ans/' + ques.Id + '/' + ques.qOpt.Id + '/' + options[0][0])"><span class="punj-medium">{{options[0][1]}} / </span>{{options[0][0]}}</button> 
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click="go('ans/' + ques.Id + '/' + ques.qOpt.Id + '/' + options[1][0])"><span class="punj-medium">{{options[1][1]}} / </span>{{options[1][0]}}</button>
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click="go('ans/' + ques.Id + '/' + ques.qOpt.Id + '/' + options[2][0])"><span class="punj-medium">{{options[2][1]}} / </span>{{options[2][0]}}</button>
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click="go('ans/' + ques.Id + '/' + ques.qOpt.Id + '/' + options[3][0])"><span class="punj-medium">{{options[3][1]}} / </span>{{options[3][0]}}</button>
+	    </div>
+    </div>
+    <!-- div>
+        Debug Info: {{getDebugInfo}}
+    </div -->
+</div>

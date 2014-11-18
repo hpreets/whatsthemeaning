@@ -1,0 +1,38 @@
+<div class="container" ng-swipe-left="swipeLeft()">
+	<div class="bar bar-header bar-{{(selAns == ansEng) && 'balanced' || 'assertive' }}">
+		<button class="button" data-ng-click="home()">Home</button>
+		<div class="title">
+	        <span ng-show="selAns == ansEng">CORRECT</span>
+	        <span ng-show="selAns != ansEng">INCORRECT</span>
+	        | Score: {{progressText}}
+		</div>
+		<span class="button button-clear">
+	        <button class="button" ng-show="isComplete" data-ng-click="go('/score')">Score</button>
+	        <button class="button" ng-show="!isComplete" data-ng-click="go('/ques')">Next</button>
+	    </span>
+	</div>
+    <div class="text-center" style="padding-top:35px">
+		<div class="card">
+	        <div class="item item-text-wrap padding">
+			<span class="punj-medium" style="line-height:1.3; font-family: GurbaniAkhar">
+				{{quesPunj}}
+			</span>
+		        <br />{{quesEng}}
+		    </div>
+	        <div class="item item-text-wrap">
+		        <span class="punj-large">{{wordPunj}} : {{ansPunj}}</span>
+	                       <br />
+		        <span class="" >{{wordEng}} : {{ansEng}}</span>
+	        </div>
+	        <p class="punj-medium padding">{{explPunj}}</p>
+	        <p>{{explEng}}</p>
+		</div>
+	    <div class="padding">
+		    <button class="button button-block button-small button-positive" ng-show="!isComplete" data-ng-click="go('/ques')">Next Question</button>
+		    <button class="button button-block button-small button-positive" ng-show="isComplete" data-ng-click="go('/score')">Score</button>
+	    </div>
+    </div>
+    <!-- div>
+        Debug Info: {{getDebugInfo}}
+    </div -->
+</div>

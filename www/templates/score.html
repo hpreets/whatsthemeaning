@@ -1,0 +1,38 @@
+<ion-view title="Scoreboard" hide-back-button="true">
+  <ion-nav-bar class="bar-positive">
+	  <ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	  </ion-nav-buttons>
+	  <ion-nav-buttons side="right">
+		<a class="button" href="#/app/ques/true">Play Again</a>
+	  </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header text-center">
+        <div class="font-large">
+            {{score}}
+        </div>
+        {{feedback}}<hr/>
+        Review All Answers
+	    <div class="text-center" ng-repeat="ques in allQuiz" style="background-color:{{(success.indexOf(ques.Id) >= 0) && 'green' || 'red' }}">
+			<div class="card">
+		        <div class="item item-text-wrap padding">
+			        <span class="punj-medium" style="line-height:1.3; font-family: GurbaniAkhar">
+					{{ques.quesPunj}}
+				</span>
+				<span ng-hide="!showTranslit">
+				<br />{{ques.quesEng}}
+				</span>
+			    </div>
+		        <div class="item item-text-wrap font-large">
+			        <span class="punj-large">{{ques.qOpt.wordPunj}} : {{ques.qOpt.ansPunj}}</span>
+					<span ng-hide="!showTranslit">
+						<br />
+                        {{ques.qOpt.wordEng}}
+					</span> : {{ques.qOpt.ansEng}}
+		        </div>
+		        <div class="item item-text-wrap punj-medium padding">{{ques.explPunj}}</div>
+		        <div class="item item-text-wrap">{{ques.explEng}}</div>
+			</div>
+	    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,33 @@
+/* Empty. Add your own CSS if you like */
+@font-face {
+    font-family: "GurbaniAkhar";
+    src: url("../fonts/GURAKHAR.TTF") format("opentype");   
+  font-weight: normal;
+  font-style: normal; 
+}
+.punj-small {
+    font-family: "GurbaniAkhar" !important;
+    font-size: 12px;
+}
+.punj-medium {
+    font-family: "GurbaniAkhar" !important;
+    font-size: 18px;
+}
+.punj-large {
+    font-family: "GurbaniAkhar" !important;
+    font-size: 24px;
+}
+.punj-x-large {
+    font-family: "GurbaniAkhar" !important;
+    font-size: 32px;
+}
+.scroll-content {
+	background: url('./../img/bkg.jpg');
+	background-color:#F3EBC5;
+}
+.ques-option-button {
+  line-height: 25px;
+  padding: 0px 0px 0px 0px;
+  vertical-align: middle;
+  text-align: center;
+}

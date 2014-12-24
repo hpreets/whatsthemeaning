@@ -25,3 +25,8 @@ $ git pull origin
 [http://ionicframework.com/docs/guide/installation.html]
 Ionic Guide - Installation
 
+**************************
+
+git add README.md ZBC XYZ
+git commit -m "first commit"
+git push -u origin master

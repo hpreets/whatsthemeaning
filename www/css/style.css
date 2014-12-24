@@ -31,3 +31,53 @@
   vertical-align: middle;
   text-align: center;
 }
+.side-bar-background {background-color:#000000;background-size:cover;width:115%}
+.side-bar-background p{bottom:0;position:absolute;margin-left:9px;color:#fff;font-size:16px;margin-bottom:12px}
+.side-menu-content-top{margin-top:40px}
+.side-bar-header{height:100px;width:115%;border-width:0;border-style:none;border-top:none;border-bottom:none;background-color:transparent;background-size:0;left:-5px;top:-5px}
+
+.psd-tab {
+background:0 0;
+width:auto;
+right:0;
+margin-bottom:23px;
+margin-right:6px;
+border:0px
+}
+
+.psd-tab-item {
+height:100px;
+width:auto;
+padding:5px;
+}
+
+.psd-icon-home {
+height:56px!important;
+width:56px!important;
+border-radius:50%;
+color:#fff;
+background:#FF4081;
+font-size:24px!important;
+-webkit-box-shadow:2px 3px 3px 0 rgba(41,41,41,.3);
+box-shadow:2px 3px 3px 0 rgba(41,41,41,.3);
+padding-top:2px;
+}
+
+.reveal-q-animation.ng-enter {
+-webkit-transition: .5s ease-in ;
+transition: .5s ease-in ;
+opacity:0;
+}
+.reveal-a-animation.ng-enter {
+-webkit-transition: .5s linear all;
+transition: .5s linear all;
+opacity:0;
+}
+.reveal-o-animation.ng-enter {
+-webkit-transition: .5s linear all ;
+transition: .5s linear all ;
+opacity:0;
+}
+.reveal-q-animation.ng-enter.ng-enter-active,.reveal-a-animation.ng-enter.ng-enter-active,.reveal-round-animation.ng-enter.ng-enter-active,.reveal-o-animation.ng-enter.ng-enter-active {
+opacity:1;
+}

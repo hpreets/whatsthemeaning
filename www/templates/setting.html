@@ -5,7 +5,13 @@
 	  </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="has-header">
-	<ion-toggle ng-model="data.showTranslit" ng-change="updateTranslit()" toggle-class="toggle-calm">Show Transliteration</ion-toggle>
+	<ion-toggle ng-model="data.showTranslit" ng-change="updateTranslit()" toggle-class="toggle-positive">Show Transliteration</ion-toggle>
+	<label class="item item-input item-select">
+      <div class="input-label">
+        "Start" button starts which quiz
+      </div>
+      <select ng-model="data.startingBani" ng-options="item.value as item.text for (value, item) in data.startingBaniList" ng-change="updateStartingBani()"></select>
+    </label>
   </ion-content>
 
 </ion-view>

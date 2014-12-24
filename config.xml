@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.games.mrharpreets.wtm" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.games.mrharpreets.wtm" version="1.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Gurbani Bodh</name>
     <description>
         A simple quiz based application to understand meaning of Gurbani words and lines.
@@ -13,5 +13,21 @@
     <preference name="KeepRunning" value="false"/>
     <!--preference name="LoadingDialog" value="My Title,My Message"-->
     <preference name="AndroidLaunchMode" value="singleInstance"/>
+    <preference name="webviewbounce" value="false"/>
+    <preference name="UIWebViewBounce" value="false"/>
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="BackupWebStorage" value="none"/>
+    <preference name="SplashScreen" value="screen"/>
+    <feature name="StatusBar">
+        <param name="ios-package" value="CDVStatusBar" onload="true"/>
+    </feature>
+
+    <platform name="android">
+        <!-- you can use any density that exists in the Android project -->
+        <splash src="www/img/splash.png" density="port-hdpi"/>
+        <splash src="www/img/splash.png" density="port-ldpi"/>
+        <splash src="www/img/splash.png" density="port-mdpi"/>
+        <splash src="www/img/splash.png" density="port-xhdpi"/>
+    </platform>
 
 </widget>

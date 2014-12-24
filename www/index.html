@@ -4,17 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title></title>
-
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet">
+
+	</head>
+
+  <body ng-app="wtm">
+    <ion-nav-view></ion-nav-view>
+
+
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
 
     <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
     <script src="lib/underscore-min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -23,12 +28,10 @@
     <!-- your app's js -->
     <script src="data/japji.js"></script>
     <script src="data/misc.js"></script>
+    <script src="data/slokm9.js"></script>
+
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
-	</head>
-
-  <body ng-app="wtm">
-    <ion-nav-view></ion-nav-view>
   </body>
 </html>

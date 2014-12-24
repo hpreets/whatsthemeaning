@@ -18,22 +18,52 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 */
 	var questions = misctuks,
 	options = miscques,
+	totalquescount = -1,
+	currquescount = -1,
+	currqid = -1,
 							
 	getQuestionById = function (qId, oId, addToCovered) {
+		// alert(qId + '--' + oId + '--' + addToCovered);
 		var ques = null,
 			l = questions.length,
 			opt = null,
 			i;
-		if (qId == null) qId = nextRandomIntFromSet();
-		ques = questions[qId];
-		if (oId == null) {
-			oId = (ques.totalQCnt == "0" ? "0" : Math.floor(Math.random()*(parseInt(ques.totalQCnt)-0+1)+0) );
-			opt = getOptionByQuesAndOptId(qId, oId);
+		if (qId == null  &&  debugSerialOptions) {
+			if (totalquescount != -1) {
+				if (currquescount + 1 > totalquescount) {
+					totalquescount = -1;
+				}
+				else {
+					currquescount = currquescount + 1;
+					ques = questions[currqid];
+					opt = getOptionByQuesAndOptId(currqid, currquescount);
+					ques.qOpt = opt;
+				}
+			}
+			if (totalquescount == -1) {
+				qId = nextRandomIntFromSet();
+				// alert(qId);
+				currqid = qId;
+				ques = questions[qId];
+				totalquescount = ques.totalQCnt;
+				oId = 0;
+				currquescount = oId;
+				opt = getOptionByQuesAndOptId(qId, oId);
+				ques.qOpt = opt;
+			}
 		}
 		else {
-			opt = getOptionById(oId);
+			if (qId == null) qId = nextRandomIntFromSet();
+			ques = questions[qId];
+			if (oId == null) {
+				oId = (ques.totalQCnt == "0" ? "0" : Math.floor(Math.random()*(parseInt(ques.totalQCnt)-0+1)+0) );
+				opt = getOptionByQuesAndOptId(qId, oId);
+			}
+			else {
+				opt = getOptionById(oId);
+			}
+			ques.qOpt = opt;
 		}
-		ques.qOpt = opt;
 		if (addToCovered) covered.push(ques);
 		return ques;
 
@@ -72,13 +102,14 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	},
 	total = questions.length,
 	max = 10,
-	maxRandomIntSetSize = 100,
+	maxRandomIntSetSize = 50,
 	randomIntSet = [],
 	covered = [],
 	success = [],
 	refillAt = 20,
 	baniType = 'misc',
 	debugSerial = false,
+	debugSerialOptions = false,
 	randomIntNotInSet = function(max, intSet) {
 		var rnd = Math.floor(Math.random()*max); // _.random(0, max);
 		while (intSet.indexOf(rnd) >= 0) {
@@ -88,7 +119,7 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	},
 	nextRandomIntFromSet = function() {
 		if (randomIntSet == null  ||  randomIntSet.length <= refillAt) {
-			if (debugSerial) populateSerialIntSet();
+			if (debugSerial || debugSerialOptions) populateSerialIntSet();
 			else populateRandomIntSet();
 		}
 		var rnd = randomIntSet.pop();
@@ -133,10 +164,17 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 		if (bani == 'japji') {
 			questions = japjituks;
 			options = japjiques;
+			maxRandomIntSetSize = 100;
+		}
+		else if (bani == 'slokm9') {
+			questions = slokm9tuks;
+			options = slokm9ques;
+			maxRandomIntSetSize = 50;
 		}
 		else {
 			questions = misctuks;
 			options = miscques;
+			maxRandomIntSetSize = 100;
 		}
 		if (baniType != bani) {
 			total = questions.length;
@@ -187,6 +225,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     },
                     checkSerially : function() {
 						debugSerial = true;
+					},
+                    checkSeriallyOptions : function() {
+						debugSerialOptions = true;
 					},
                     debugGetDebugInfo : function() {
                         /*var debugInfo = new Object();

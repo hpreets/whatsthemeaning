@@ -19,6 +19,7 @@ angular.module('wtm.controllers', [])
 .controller('QuestionCtrl', function ($scope, $stateParams, $localstorage, $timeout, Question) {
 	$scope.showTranslit = $localstorage.get('showTransliteration', false) === 'true';
 	// Question.checkSerially();
+	// Question.checkSeriallyOptions();
 	
 	if ($stateParams.reset == 'true') {
 		Question.reset();

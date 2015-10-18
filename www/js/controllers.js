@@ -216,7 +216,7 @@ angular.module('wtm.controllers', [])
 	$scope.data.showTranslit = $localstorage.get('showTransliteration', 'false') === 'true';
 	$scope.data.startingBani = $localstorage.get('startingBani', 'akv');
 	$scope.data.startingBaniList = [
-		{ text: "Asa Ki Vaar", value: "akv" },
+		{ text: "Asa Di Vaar", value: "akv" },
 		{ text: "Japji", value: "japji" },
 		{ text: "Assorted", value: "misc" },
 		{ text: "Salok M:9", value: "slokm9" }

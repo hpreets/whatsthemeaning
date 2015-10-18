@@ -18,6 +18,7 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 */
 	var questions = misctuks,
 	options = miscques,
+	shabads = null,
 	totalquescount = -1,
 	currquescount = -1,
 	currqid = -1,
@@ -53,8 +54,12 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			}
 		}
 		else {
-			if (qId == null) qId = nextRandomIntFromSet();
+			if (isNaN(qId)) { qId = nextRandomIntFromSet(); }
+			else { qId = nextRandomIntFromSet(qId); }
+			// console.log('qId :::' + qId);
+			// console.log('randomIntSet :::' + randomIntSet);
 			ques = questions[qId];
+			// console.log('ques :::' + ques);
 			if (oId == null) {
 				oId = (ques.totalQCnt == "0" ? "0" : Math.floor(Math.random()*(parseInt(ques.totalQCnt)-0+1)+0) );
 				opt = getOptionByQuesAndOptId(qId, oId);
@@ -64,6 +69,8 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			}
 			ques.qOpt = opt;
 		}
+		ques.shbd = getShabadById(ques.shabadId);
+
 		if (addToCovered) covered.push(ques);
 		return ques;
 
@@ -82,6 +89,21 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	},
 	getOptionByQuesAndOptId = function (qId, optId) {
 		return getOptionById(qId+"_"+optId);
+	},
+	getShabadById = function (shbdId) {
+		if (shabads != null) {
+			var shabad = null,
+				l = shabads.length,
+				i;
+			for (i = 0; i < l; i = i + 1) {
+				if (shabads[i].Id == shbdId) {
+					shabad = shabads[i];
+					break;
+				}
+			}
+			return shabad;
+		}
+		return null;
 	},
 	getAllQuestions = function () {
 		var ques = [];
@@ -117,12 +139,15 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 		}
 		return rnd;
 	},
-	nextRandomIntFromSet = function() {
+	nextRandomIntFromSet = function(startFrom) {
 		if (randomIntSet == null  ||  randomIntSet.length <= refillAt) {
-			if (debugSerial || debugSerialOptions) populateSerialIntSet();
-			else populateRandomIntSet();
+			// console.log('Populating randomIntSet :::' + randomIntSet);
+			if (debugSerial || debugSerialOptions) { populateSerialIntSet(isNaN(startFrom) ? 0 : startFrom); }
+			else { populateRandomIntSet(); }
+			// console.log('Populated randomIntSet :::' + randomIntSet);
 		}
 		var rnd = randomIntSet.pop();
+		// console.log('rnd :::' + rnd);
 		return rnd;
 	},
 	addScore = function(customQues, selAns) {
@@ -146,13 +171,17 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	maxQuestionsPerQuiz = function() {
 		return max;
 	},
+	areQuestionAskedSerially = function() {
+		return debugSerial;
+	},
 	populateRandomIntSet = function() {
 		for (var i = 0; randomIntSet.length < maxRandomIntSetSize; i++) {
 			randomIntSet.unshift(randomIntNotInSet(total-1, randomIntSet));
 		}
 	},
-	populateSerialIntSet = function() {
-		for (var i = 0; i < total; i++) {
+	populateSerialIntSet = function(startFrom) {
+		if ((startFrom == null) || (startFrom >= total)) startFrom = 0;
+		for (var i = startFrom; i < total; i++) {
 			randomIntSet.unshift(i);
 		}
 	},
@@ -160,25 +189,37 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 		covered = [];
 		success = [];
 	},
+	resetQuestionSet = function() {
+		randomIntSet = [];
+	},
 	setQuestionSet = function(bani) {
 		if (bani == 'japji') {
 			questions = japjituks;
 			options = japjiques;
+			shabads = null;
 			maxRandomIntSetSize = 100;
+		}
+		else if (bani == 'akv') {
+			questions = akvtuks;
+			options = akvques;
+			shabads = akvshbd;
+			maxRandomIntSetSize = 200;
 		}
 		else if (bani == 'slokm9') {
 			questions = slokm9tuks;
 			options = slokm9ques;
+			shabads = null;
 			maxRandomIntSetSize = 50;
 		}
 		else {
 			questions = misctuks;
 			options = miscques;
+			shabads = null;
 			maxRandomIntSetSize = 100;
 		}
 		if (baniType != bani) {
 			total = questions.length;
-			randomIntSet = [];
+			resetQuestionSet;
 			resetStat;
 		}
 		baniType = bani;
@@ -191,6 +232,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     random: function () {
                         return getQuestionById(null, null, true);
                     },
+                    getQuesOnwards: function (qId) {
+                    	return getQuestionById(qId, null, true);
+                    },
                     get: function (qId, oId) {
                     	return getQuestionById(qId, oId, false);
                     },
@@ -202,6 +246,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     },
                     getCoveredQuestions: function () {
                         return questionsCovered();
+                    },
+                    validate: function (ques, selAns) {
+                    	addScore(ques, selAns);
                     },
                     validateAndGet: function (qId, oId, selAns) {
                     	var ques = getQuestionById(qId, oId, false);
@@ -220,11 +267,20 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     reset: function () {
                         return resetStat();
                     },
+                    resetQuestions: function () {
+                        return resetQuestionSet();
+                    },
                     setBani : function(bani) {
                     	setQuestionSet(bani);
                     },
                     checkSerially : function() {
 						debugSerial = true;
+					},
+                    isSerial : function() {
+						return areQuestionAskedSerially();
+					},
+                    checkRandomly : function() {
+						debugSerial = false;
 					},
                     checkSeriallyOptions : function() {
 						debugSerialOptions = true;

@@ -12,33 +12,44 @@ angular.module('wtm.controllers', [])
 .controller('HomeCtrl', function ($scope, $localstorage, $timeout, Question) {
 	Question.reset();
 	$scope.data = {};
-	$scope.startBani = $localstorage.get('startingBani', 'japji');
+	$scope.startBani = $localstorage.get('startingBani', 'akv');
+
 	// $scope.startBani = 'japji';
 })
 
-.controller('QuestionCtrl', function ($scope, $stateParams, $localstorage, $timeout, Question) {
+.controller('QuestionCtrl', function ($scope, $stateParams, $localstorage, $timeout, $ionicModal, Question) {
+	var debugMode = true;
 	$scope.showTranslit = $localstorage.get('showTransliteration', false) === 'true';
+	if ($localstorage.get('askSerially', false) === 'true') Question.checkSerially(); else Question.checkRandomly();
 	// Question.checkSerially();
-	// Question.checkSeriallyOptions();
+ 	// Question.checkSeriallyOptions();
 	
 	if ($stateParams.reset == 'true') {
 		Question.reset();
 	}
 	if ($stateParams.bani != null) {
+		Question.resetQuestions();
 		Question.setBani($stateParams.bani);
 	}
 
 	$scope.goQuestion = function() {
 		$scope.answer = false;
-		$scope.ques = Question.random();
-		// $scope.ques = Question.get("56", "56_2");
+
+		var quesCompletedTill = $localstorage.get('qCompTill_' + $stateParams.bani, 0);
+
+		if ($localstorage.get('askSerially', false) === 'true') $scope.ques = Question.getQuesOnwards(quesCompletedTill);
+		else $scope.ques = Question.random();
+		// $scope.ques = Question.get("60", "60_0");
+
 		$scope.option = $scope.ques.qOpt; // Question.getOptions($scope.ques);
 		$scope.wordPunj = $scope.option.wordPunj;
 		$scope.wordEng = $scope.option.wordEng;
-		$scope.questionPunjPart1 = (' '+$scope.ques.quesPunj).substr(0,(' '+$scope.ques.quesPunj).indexOf(' '+$scope.option.wordPunj+' '));
-		$scope.questionPunjPart3 = (' '+$scope.ques.quesPunj).substr((' '+$scope.ques.quesPunj).indexOf(' '+$scope.option.wordPunj+' ')+(' '+$scope.option.wordPunj+' ').length);
-		$scope.questionEngPart1 = (' '+$scope.ques.quesEng).substr(0,(' '+$scope.ques.quesEng).indexOf(' '+$scope.option.wordEng+' '));
-		$scope.questionEngPart3 = (' '+$scope.ques.quesEng).substr((' '+$scope.ques.quesEng).indexOf(' '+$scope.option.wordEng+' ')+(' '+$scope.option.wordEng+' ').length);
+		$scope.questionPunjParts = getSplittedTuk($scope.ques.quesPunj, $scope.option.wordPunj);
+		// $scope.questionPunjPart1 = (' '+$scope.ques.quesPunj).substr(0,(' '+$scope.ques.quesPunj).indexOf(' '+$scope.option.wordPunj+' '));
+		// $scope.questionPunjPart3 = (' '+$scope.ques.quesPunj).substr((' '+$scope.ques.quesPunj).indexOf(' '+$scope.option.wordPunj+' ')+(' '+$scope.option.wordPunj+' ').length);
+		$scope.questionEngParts = getSplittedTuk($scope.ques.quesEng, $scope.option.wordEng);
+		// $scope.questionEngPart1 = (' '+$scope.ques.quesEng).substr(0,(' '+$scope.ques.quesEng).indexOf(' '+$scope.option.wordEng+' '));
+		// $scope.questionEngPart3 = (' '+$scope.ques.quesEng).substr((' '+$scope.ques.quesEng).indexOf(' '+$scope.option.wordEng+' ')+(' '+$scope.option.wordEng+' ').length);
 		$scope.progressText = Question.quesCounterText();
 		$scope.title = 'Question ' + $scope.progressText;
 		// var optionArr = [$scope.option.opAEng, $scope.option.opBEng, $scope.option.opCEng, $scope.option.opDEng];
@@ -63,9 +74,40 @@ angular.module('wtm.controllers', [])
 			$scope.showOption2 = $scope.showOptions || false;
 			$scope.showOption3 = $scope.showOptions || false;
 			$scope.showOption4 = $scope.showOptions || false;*/
-		}, 1000);
+		}, 2000);
+
+		$scope.shabad = $scope.ques.shbd != null ? getSplittedTuk($scope.ques.shbd.shabdPunj, $scope.ques.quesPunj) : null;
+		$scope.tuk = $scope.ques.quesPunj;
+		$ionicModal.fromTemplateUrl('./templates/modal.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function(modal) {
+		    $scope.modal = modal
+		})  
+
+		$scope.openModal = function() {
+		    $scope.modal.show()
+		}
+
+		$scope.closeModal = function() {
+		    $scope.modal.hide();
+		};
+
+		$scope.$on('$destroy', function() {
+		    $scope.modal.remove();
+		});
+
 	};
 	
+	getSplittedTuk = function(tuk, word) {
+		var splitArr = tuk.split(word);
+		if (_.size(splitArr) > 2) {
+			splitArr[1] = _.rest(splitArr, 1).join(' ' + word + ' ');
+		}
+		return splitArr;
+	};
+
+
 	$scope.goAnswer = function(quesId, optionId, selectedAns) {
 		/*$scope.showOption1 = false;
 		$scope.showOption2 = false;
@@ -81,7 +123,9 @@ angular.module('wtm.controllers', [])
 		else if ($scope.correctAnswerIndex == 2) $scope.option3Class = 'button-balanced'; // $scope.showOption3 = true;
 		else if ($scope.correctAnswerIndex == 3) $scope.option4Class = 'button-balanced'; // $scope.showOption4 = true;*/
 
-		$scope.ques = Question.validateAndGet(quesId, optionId, selectedAns);
+		// $scope.ques = Question.validateAndGet(quesId, optionId, selectedAns); // This resulted in jumping of another question while serial
+		if (Question.isSerial()) $localstorage.set('qCompTill_' + $stateParams.bani, Number(quesId)+1);
+		Question.validate($scope.ques, selectedAns);
 		$scope.quesEng = $scope.ques.quesEng;
 		$scope.quesPunj = $scope.ques.quesPunj;
 		$scope.option = $scope.ques.qOpt;
@@ -111,6 +155,7 @@ angular.module('wtm.controllers', [])
 			$scope.title += ' | Score: ' + $scope.progressText;
 		}, 0);
 	};
+
 	open = $scope.goQuestion();
 })
 
@@ -166,15 +211,17 @@ angular.module('wtm.controllers', [])
 	$scope.feedback = Question.feedback();
 })
 
-.controller('SettingCtrl', function ($scope, $localstorage) {
+.controller('SettingCtrl', function ($scope, $localstorage, Question) {
 	$scope.data = {};
 	$scope.data.showTranslit = $localstorage.get('showTransliteration', 'false') === 'true';
-	$scope.data.startingBani = $localstorage.get('startingBani', 'japji');
+	$scope.data.startingBani = $localstorage.get('startingBani', 'akv');
 	$scope.data.startingBaniList = [
+		{ text: "Asa Ki Vaar", value: "akv" },
 		{ text: "Japji", value: "japji" },
 		{ text: "Assorted", value: "misc" },
 		{ text: "Salok M:9", value: "slokm9" }
 	];
+	$scope.data.askSerially = $localstorage.get('askSerially', 'false') === 'true';
   
 	$scope.updateTranslit = function() {
 		$localstorage.set('showTransliteration', $scope.data.showTranslit);
@@ -182,6 +229,11 @@ angular.module('wtm.controllers', [])
 
 	$scope.updateStartingBani = function() {
 		$localstorage.set('startingBani', $scope.data.startingBani);
+	};
+
+	$scope.updateAskSerially = function() {
+		$localstorage.set('askSerially', $scope.data.askSerially);
+		if ($scope.data.askSerially) Question.checkSerially(); else Question.checkRandomly();
 	};
 })
 ;

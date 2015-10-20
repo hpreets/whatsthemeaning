@@ -1,0 +1,30 @@
+<ion-view title="Scoreboard" hide-back-button="true">
+  <ion-nav-bar class="bar-positive">
+	  <ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	  </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header text-center">
+  	<br />
+    <div class="text-center" ng-repeat="score in baniScores">
+    	<h3>{{score.bani.text}}</h3>
+		<div class="card">
+	        <div class="item item-text-wrap">
+		        <span>
+					{{score.labelPlayed}} {{score.played}} 
+				</span>
+		    </div>
+	        <div class="item item-text-wrap">
+		        <span>
+					{{score.labelCorrect}} {{score.correct}}
+				</span>
+		    </div>
+	        <div class="item item-text-wrap">
+		        <span>
+					{{score.labelAllQuiz}} {{score.allQuiz}}
+				</span>
+		    </div>
+		</div>
+    </div>
+  </ion-content>
+</ion-view>

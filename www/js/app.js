@@ -94,6 +94,15 @@ angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services'])
         }
       }
     })
+    .state('app.scoreboard', {
+      url: "/scoreboard",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/scoreboard.html",
+          controller: 'ScoreBoardCtrl'
+        }
+      }
+    })
     .state('app.setting', {
       url: "/setting",
       views: {

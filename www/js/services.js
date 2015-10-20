@@ -153,8 +153,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	addScore = function(customQues, selAns) {
 		if (customQues.qOpt.ansEng == selAns) {
 			success.push(customQues.Id);
+			return true;
 		}
-		return null;
+		return false;
 	},
 	correctAnswers = function() {
 		return success;
@@ -248,7 +249,7 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                         return questionsCovered();
                     },
                     validate: function (ques, selAns) {
-                    	addScore(ques, selAns);
+                    	return addScore(ques, selAns);
                     },
                     validateAndGet: function (qId, oId, selAns) {
                     	var ques = getQuestionById(qId, oId, false);

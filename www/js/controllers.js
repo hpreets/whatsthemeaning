@@ -108,6 +108,26 @@ angular.module('wtm.controllers', [])
 	};
 
 
+	addScoreToStorage = function (bani, isCorrectQues, isCorrectQuiz) {
+
+		var played = getNumber($localstorage.get(LSVAR_SCORE_PLAYED + bani, 0));
+		$localstorage.set(LSVAR_SCORE_PLAYED + bani, played+1);
+
+		if (isCorrectQues) {
+			var corr = getNumber($localstorage.get(LSVAR_SCORE_CORRECT + bani, 0));
+			$localstorage.set(LSVAR_SCORE_CORRECT + bani, corr+1);
+
+			if (isCorrectQuiz) {
+				var quizCorr = getNumber($localstorage.get(LSVAR_SCORE_QUIZ_WON + bani, 0));
+				$localstorage.set(LSVAR_SCORE_QUIZ_WON + bani, quizCorr+1);
+			}
+		}
+	}
+
+	getNumber = function(inputParam) {
+		if (isNaN(inputParam)) return 0; else return Number(inputParam);
+	}
+
 	$scope.goAnswer = function(quesId, optionId, selectedAns) {
 		/*$scope.showOption1 = false;
 		$scope.showOption2 = false;
@@ -125,7 +145,11 @@ angular.module('wtm.controllers', [])
 
 		// $scope.ques = Question.validateAndGet(quesId, optionId, selectedAns); // This resulted in jumping of another question while serial
 		if (Question.isSerial()) $localstorage.set('qCompTill_' + $stateParams.bani, Number(quesId)+1);
-		Question.validate($scope.ques, selectedAns);
+		var isCorrect = Question.validate($scope.ques, selectedAns);
+
+		// update scores
+		addScoreToStorage($stateParams.bani, isCorrect, Question.isComplete());
+
 		$scope.quesEng = $scope.ques.quesEng;
 		$scope.quesPunj = $scope.ques.quesPunj;
 		$scope.option = $scope.ques.qOpt;
@@ -235,5 +259,22 @@ angular.module('wtm.controllers', [])
 		$localstorage.set('askSerially', $scope.data.askSerially);
 		if ($scope.data.askSerially) Question.checkSerially(); else Question.checkRandomly();
 	};
+})
+
+.controller('ScoreBoardCtrl', function ($scope, $localstorage) {
+	$scope.baniList = BANI_LIST;
+	// console.log('$scope.baniList :::' + BANI_LIST.length);
+	var baniScores = [];
+	for (var i = 0; i < BANI_LIST.length; i++) {
+		var score = { played: 10, correct: 20, allQuiz: 30, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: BANI_LIST[i] };
+		// console.log('BANI_LIST[i]:::' + i + '---' + BANI_LIST[i].value + '---' + BANI_LIST[i].text);
+		score.played = $localstorage.get(LSVAR_SCORE_PLAYED + BANI_LIST[i].value, 0);
+		score.correct = $localstorage.get(LSVAR_SCORE_CORRECT + BANI_LIST[i].value, 0);
+		score.allQuiz = $localstorage.get(LSVAR_SCORE_QUIZ_WON + BANI_LIST[i].value, 0);
+		baniScores.push(score);
+	}
+	$scope.baniScores = baniScores;
+	// console.log('baniScores:::' + baniScores);
+	
 })
 ;

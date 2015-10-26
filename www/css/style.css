@@ -81,3 +81,22 @@ opacity:0;
 .reveal-q-animation.ng-enter.ng-enter-active,.reveal-a-animation.ng-enter.ng-enter-active,.reveal-round-animation.ng-enter.ng-enter-active,.reveal-o-animation.ng-enter.ng-enter-active {
 opacity:1;
 }
+
+.header .col {
+    background-color:lightgrey;
+}
+
+.col {
+    border: solid 0px grey;
+    border-bottom-style: none;
+    border-right-style: none;
+    background-color:white;
+}
+
+.col:last-child {
+    border-right: solid 0px gray;
+}
+
+.row:last-child .col {
+    border-bottom: solid 0px gray;
+}

@@ -265,16 +265,38 @@ angular.module('wtm.controllers', [])
 	$scope.baniList = BANI_LIST;
 	// console.log('$scope.baniList :::' + BANI_LIST.length);
 	var baniScores = [];
+	var baniColors = [ "#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360" ];
+	var played = [], correct = [], allQuiz = [];
+	var totalP = 0, totalW = 0, totalA = 0;
 	for (var i = 0; i < BANI_LIST.length; i++) {
-		var score = { played: 10, correct: 20, allQuiz: 30, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: BANI_LIST[i] };
+		var score = { played: 0, correct: 0, allQuiz: 0, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: BANI_LIST[i], color: baniColors[i] };
 		// console.log('BANI_LIST[i]:::' + i + '---' + BANI_LIST[i].value + '---' + BANI_LIST[i].text);
-		score.played = $localstorage.get(LSVAR_SCORE_PLAYED + BANI_LIST[i].value, 0);
-		score.correct = $localstorage.get(LSVAR_SCORE_CORRECT + BANI_LIST[i].value, 0);
-		score.allQuiz = $localstorage.get(LSVAR_SCORE_QUIZ_WON + BANI_LIST[i].value, 0);
+		score.played = $localstorage.get(LSVAR_SCORE_PLAYED + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		totalP += Number(score.played);
+		score.correct = $localstorage.get(LSVAR_SCORE_CORRECT + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		totalW += Number(score.correct);
+		score.allQuiz = $localstorage.get(LSVAR_SCORE_QUIZ_WON + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		totalA += Number(score.allQuiz);
 		baniScores.push(score);
+
+		played.push({ value: score.played, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
+		correct.push({ value: score.correct, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
+		allQuiz.push({ value: score.allQuiz, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
 	}
+	var score = { played: totalP, correct: totalW, allQuiz: totalA, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: 'Total', color: '' };
+	baniScores.push(score);
+
 	$scope.baniScores = baniScores;
 	// console.log('baniScores:::' + baniScores);
+
+	var ctxP = document.getElementById("playedChart").getContext("2d");
+	var ctxW = document.getElementById("wonChart").getContext("2d");
+	var ctxA = document.getElementById("allQuizChart").getContext("2d");
+	var chartP = new Chart(ctxP).Pie(played, {});
+	var chartW = new Chart(ctxW).Pie(correct, {});
+	var chartA = new Chart(ctxA).Pie(allQuiz, {});
+	// document.getElementById('js-legend').innerHTML = myDoughnutChart.generateLegend();
+	// document.getElementById('js-legend').appendChild(document.getElementById('js-legend').firstChild);
 	
 })
 ;

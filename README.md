@@ -27,6 +27,6 @@ Ionic Guide - Installation <br />
 
 **************************
 
-git add README.md ZBC XYZ <br />
+git add README.md ZBC XYZ   --OR--   git add .<br />
 git commit -m "Your commit comments" <br />
 git push -u origin ionicportable <br />

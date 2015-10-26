@@ -6,24 +6,31 @@
   </ion-nav-bar>
   <ion-content class="has-header text-center">
   	<br />
-    <div class="text-center" ng-repeat="score in baniScores">
-    	<h3>{{score.bani.text}}</h3>
-		<div class="card">
-	        <div class="item item-text-wrap">
-		        <span>
-					{{score.labelPlayed}} {{score.played}} 
-				</span>
-		    </div>
-	        <div class="item item-text-wrap">
-		        <span>
-					{{score.labelCorrect}} {{score.correct}}
-				</span>
-		    </div>
-	        <div class="item item-text-wrap">
-		        <span>
-					{{score.labelAllQuiz}} {{score.allQuiz}}
-				</span>
-		    </div>
+  	<div class="row header">
+      <div class="col">Bani</div>
+      <div class="col">Played</div>
+      <div class="col">Correctly Answered</div>
+      <div class="col">Perfect 10</div>
+    </div>
+    <div class="row" ng-repeat="score in baniScores">
+      <div class="col" style="background:{{score.color}}">{{score.bani.text ? score.bani.text : score.bani}}</div>
+      <div class="col">{{score.played}}</div>
+      <div class="col">{{score.correct}}</div>
+      <div class="col">{{score.allQuiz}}</div>
+    </div>
+    <br />
+    <div class="row responsive-sm">
+    	<div class="col">
+	    	<div>Played</div>
+	    	<canvas id="playedChart" width="200" height="200"></canvas>
+	    </div>
+		<div class="col">
+		    <div>Correctly Answered</div>
+		    <canvas id="wonChart" width="200" height="200"></canvas>
+		</div>
+	    <div class="col">
+		    <div>Perfect 10</div>
+		    <canvas id="allQuizChart" width="200" height="200"></canvas>
 		</div>
     </div>
   </ion-content>

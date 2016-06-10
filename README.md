@@ -30,3 +30,7 @@ Ionic Guide - Installation <br />
 git add README.md ZBC XYZ   --OR--   git add .<br />
 git commit -m "Your commit comments" <br />
 git push -u origin ionicportable <br />
+
+<br/>**************************<br/>
+To upgrade ionic: npm install -g ionic <br />
+To upgrade node: Download and install

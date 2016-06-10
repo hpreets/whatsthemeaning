@@ -45,6 +45,14 @@ margin-right:6px;
 border:0px
 }
 
+.psd-tab-left {
+background:0 0;
+width:auto;
+margin-bottom:23px;
+margin-left:6px;
+border:0px
+}
+
 .psd-tab-item {
 height:100px;
 width:auto;
@@ -64,8 +72,8 @@ padding-top:2px;
 }
 
 .reveal-q-animation.ng-enter {
--webkit-transition: .5s ease-in ;
-transition: .5s ease-in ;
+-webkit-transition: 1s ease-in ;
+transition: 1s ease-in ;
 opacity:0;
 }
 .reveal-a-animation.ng-enter {
@@ -78,7 +86,11 @@ opacity:0;
 transition: .5s linear all ;
 opacity:0;
 }
-.reveal-q-animation.ng-enter.ng-enter-active,.reveal-a-animation.ng-enter.ng-enter-active,.reveal-round-animation.ng-enter.ng-enter-active,.reveal-o-animation.ng-enter.ng-enter-active {
+
+.reveal-q-animation.ng-enter.ng-enter-active,
+.reveal-a-animation.ng-enter.ng-enter-active,
+.reveal-round-animation.ng-enter.ng-enter-active,
+.reveal-o-animation.ng-enter.ng-enter-active {
 opacity:1;
 }
 
@@ -99,4 +111,36 @@ opacity:1;
 
 .row:last-child .col {
     border-bottom: solid 0px gray;
+}
+
+.progress-bar {
+  margin-top:29px;
+}
+progress[value] {
+  -webkit-appearance:none;
+  appearance:none;
+  -moz-appearance:none;
+  height:19px;
+  border:none;
+}
+.blue-range {
+  float:left;
+  width:100%;
+  border-top:1px solid;
+  border-bottom:1px solid;
+}
+progress.blue[value]::-webkit-progress-value {
+  background-color:#5bc0de;
+  background-image:0 33% 66% 66in;
+  background-size:35px 20px 100% 100%;
+  -webkit-animation:animate-stripes 5s linear infinite;
+  animation:animate-stripes 5s linear infinite;
+  -webkit-transition:width .6s ease;
+  -o-transition:width .6s ease;
+  transition:width .6s ease;
+}
+.addtoredprog {
+  box-shadow:0 2px 60px 5px;
+  border-left:1px solid;
+  border-right:1px solid;
 }

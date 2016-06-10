@@ -1,4 +1,4 @@
-angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services'])
+angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -76,6 +76,15 @@ angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services'])
         }
       }
     })
+    .state('app.learn', {
+      url: "/learn",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/learnmode.html",
+          controller: 'LearnCtrl'
+        }
+      }
+    })
     .state('app.ans', {
       url: "/ans/:qId/:oId/:selAns",
       views: {
@@ -109,6 +118,24 @@ angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services'])
         'menuContent' :{
           templateUrl: "templates/setting.html",
           controller: 'SettingCtrl'
+        }
+      }
+    })
+    .state('app.incorrect', {
+      url: "/incorrect",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/incorrect.html",
+          controller: 'IncorrectCtrl'
+        }
+      }
+    })
+    .state('app.incdetail', {
+      url: "/incdetail/:baniId",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/incdet.html",
+          controller: 'IncorrectDetailCtrl'
         }
       }
     })

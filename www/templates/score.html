@@ -4,7 +4,7 @@
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	  </ion-nav-buttons>
 	  <ion-nav-buttons side="right">
-		<a class="button" href="#/app/ques/true">Continue</a>
+		<a class="button" ng-click='goToQuestion()'>Continue</a>
 	  </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="has-header text-center">
@@ -38,6 +38,6 @@
 	    </div>
   </ion-content>
   <div class="tabs psd-tab">
-	<a class="button button-icon icon ion-forward psd-icon-home" href="#/app/ques/true"></a>
+	<a class="button button-icon icon ion-forward psd-icon-home" ng-click='goToQuestion()'></a>
   </div>
 </ion-view>

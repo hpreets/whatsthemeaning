@@ -54,14 +54,16 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			}
 		}
 		else {
+			console.log('1. qId ::' + qId);
 			if (isNaN(qId)) { qId = nextRandomIntFromSet(); }
 			else { qId = nextRandomIntFromSet(qId); }
-			// console.log('qId :::' + qId);
-			// console.log('randomIntSet :::' + randomIntSet);
+			console.log('2. qId :::' + qId);
+			console.log('randomIntSet :::' + randomIntSet);
 			ques = questions[qId];
-			// console.log('ques :::' + ques);
+			console.log('1. oId :::' + oId);
 			if (oId == null) {
 				oId = (ques.totalQCnt == "0" ? "0" : Math.floor(Math.random()*(parseInt(ques.totalQCnt)-0+1)+0) );
+				console.log('2. oId :::' + oId);
 				opt = getOptionByQuesAndOptId(qId, oId);
 			}
 			else {
@@ -69,9 +71,27 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			}
 			ques.qOpt = opt;
 		}
+		console.log('ques.shabadId ::::' + ques.shabadId);
 		ques.shbd = getShabadById(ques.shabadId);
+		console.log('ques.shbd ::::' + ques.shbd);
 
 		if (addToCovered) covered.push(ques);
+		return ques;
+
+	},
+	getPlainQuestionById = function (qId, oId) {
+		// console.log(qId + '--' + oId);
+		var ques = null,
+			opt = null,
+
+		ques = questions[qId];
+		// console.log('ques :::' + ques.quesEng);
+		// if (oId == null) oId = qId+'_'+oId;
+		oId = qId+'_'+oId;
+		opt = getOptionById(oId);
+		ques.qOpt = opt;
+		// console.log('oId :::' + oId + '\r\n opt :::' + JSON.stringify(opt));
+
 		return ques;
 
 	},
@@ -140,14 +160,16 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 		return rnd;
 	},
 	nextRandomIntFromSet = function(startFrom) {
+		console.log('Before Populating randomIntSet :::' + randomIntSet + '--- debugSerial :::' + debugSerial);
 		if (randomIntSet == null  ||  randomIntSet.length <= refillAt) {
-			// console.log('Populating randomIntSet :::' + randomIntSet);
-			if (debugSerial || debugSerialOptions) { populateSerialIntSet(isNaN(startFrom) ? 0 : startFrom); }
+			console.log('Populating randomIntSet :::' + randomIntSet);
+			if (debugSerial || debugSerialOptions) { populateSerialIntSet((isNaN(startFrom) || randomIntSet == null) ? 0 : startFrom); }
 			else { populateRandomIntSet(); }
-			// console.log('Populated randomIntSet :::' + randomIntSet);
+			//console.log('Populated randomIntSet :::' + randomIntSet);
 		}
+		console.log('randomIntSet ::' + randomIntSet);
 		var rnd = randomIntSet.pop();
-		// console.log('rnd :::' + rnd);
+		console.log('rnd :::' + rnd);
 		return rnd;
 	},
 	addScore = function(customQues, selAns) {
@@ -181,36 +203,45 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 		}
 	},
 	populateSerialIntSet = function(startFrom) {
+		console.log('populateSerialIntSet :::' + startFrom);
 		if ((startFrom == null) || (startFrom >= total)) startFrom = 0;
+		console.log('startFrom :::' + startFrom + '--- total :::' + total);
 		for (var i = startFrom; i < total; i++) {
 			randomIntSet.unshift(i);
 		}
+		console.log('randomIntSet :::' + randomIntSet);
 	},
 	resetStat = function() {
 		covered = [];
 		success = [];
 	},
 	resetQuestionSet = function() {
-		randomIntSet = [];
+		randomIntSet = []; // [347,346,343,339,333,329,324,320,315,313,307,304,301,294,292,287,286,284,279,274,271,270,268,265,259,6,29,191,152,241,75]; // [];
 	},
 	setQuestionSet = function(bani) {
-		if (bani == 'japji') {
+		if (bani == BANI_JAPJI_VALUE) {
 			questions = japjituks;
 			options = japjiques;
-			shabads = null;
+			shabads = japjishbd;
 			maxRandomIntSetSize = 100;
 		}
-		else if (bani == 'akv') {
+		else if (bani == BANI_AKV_VALUE) {
 			questions = akvtuks;
 			options = akvques;
 			shabads = akvshbd;
 			maxRandomIntSetSize = 200;
 		}
-		else if (bani == 'slokm9') {
+		else if (bani == BANI_SLOKM9_VALUE) {
 			questions = slokm9tuks;
 			options = slokm9ques;
 			shabads = null;
 			maxRandomIntSetSize = 50;
+		}
+		else if (bani == BANI_SLOKKBR_VALUE) {
+			questions = slokkbrtuks;
+			options = slokkbrques;
+			shabads = null;
+			maxRandomIntSetSize = 100;
 		}
 		else {
 			questions = misctuks;
@@ -235,6 +266,12 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     },
                     getQuesOnwards: function (qId) {
                     	return getQuestionById(qId, null, true);
+                    },
+                    getQuesFromId: function (qId) {
+                    	return getPlainQuestionById(qId, null);
+                    },
+                    getQuesFromId: function (qId, oId) {
+                    	return getPlainQuestionById(qId, oId);
                     },
                     get: function (qId, oId) {
                     	return getQuestionById(qId, oId, false);
@@ -273,6 +310,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
                     },
                     setBani : function(bani) {
                     	setQuestionSet(bani);
+                    },
+                    getBani : function() {
+                    	return baniType;
                     },
                     checkSerially : function() {
 						debugSerial = true;
@@ -340,4 +380,64 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
     }
   }
 })
+
+.service('CommonUtils', [function() {
+
+	getText = function(textValueArray, value) {
+		for (var i = 0; i < textValueArray.length; i++) {
+			if (value == textValueArray[i].value) return textValueArray[i].text;
+		}
+		return '';
+	}
+
+	getValue = function(textValueArray, text) {
+		for (var i = 0; i < textValueArray.length; i++) {
+			if (text == textValueArray[i].text) return textValueArray[i].value;
+		}
+		return '';
+	}
+
+	// Check WHY DO I HAVE TO DEFINE RETURN BLOCK SEPARATELY?
+ 	return {
+	    getText : function(textValueArray, value) {
+	      return getText(textValueArray, value);
+	    },
+	    getValue : function(textValueArray, text) {
+	      return getValue(textValueArray, text);
+	    }
+	}
+}])
+
+/*.factory("MediaService", ["$q", "$ionicPlatform", "$window", function(e, t, n) {
+    function o(o) {
+        var r = e.defer();
+        return t.ready(function() {
+            function e() {
+                i.stop(), i.release()
+            }
+            t.is("android") && (o = "/android_asset/www/" + o), i = new n.Media(o, e), r.resolve(i)
+        }), r.promise
+    }
+    var i = null,
+        r = {
+            loadMedia: o
+        };
+    return r
+}])
+.factory("MediaService", function($q, $ionicPlatform, $window) {
+    function o(o) {
+        var r = $q.defer();
+        return $ionicPlatform.ready(function() {
+            function e() {
+                i.stop(), i.release()
+            }
+            $ionicPlatform.is("android") && (o = "/android_asset/www/" + o), i = new $window.Media(o, $q), r.resolve(i)
+        }), r.promise
+    }
+    var i = null,
+        r = {
+            loadMedia: o
+        };
+    return r
+})*/
 ;

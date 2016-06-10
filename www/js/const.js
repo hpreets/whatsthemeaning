@@ -6,14 +6,19 @@ var BANI_AKV_VALUE = 'akv',
 	BANI_MISC_LABEL = 'Assorted',
 	BANI_SLOKM9_VALUE = 'slokm9',
 	BANI_SLOKM9_LABEL = 'Salok M:9',
+	BANI_SLOKKBR_VALUE = 'slokkbr',
+	BANI_SLOKKBR_LABEL = 'Salok Kabeer Ji',
 
 	BANI_LIST = [
 		{ text: BANI_AKV_LABEL, value: BANI_AKV_VALUE },
 		{ text: BANI_JAPJI_LABEL, value: BANI_JAPJI_VALUE },
 		{ text: BANI_MISC_LABEL, value: BANI_MISC_VALUE },
-		{ text: BANI_SLOKM9_LABEL, value: BANI_SLOKM9_VALUE }
+		{ text: BANI_SLOKM9_LABEL, value: BANI_SLOKM9_VALUE },
+		{ text: BANI_SLOKKBR_LABEL, value: BANI_SLOKKBR_VALUE }
 	],
 
+	CONFIG_STARTING_BANI = BANI_SLOKKBR_VALUE,
+	CONFIG_DEFAULT_ASK_SERIALLY = 'true',
 
 	LSVAR_SHOW_TRANSLITERATION = 'showTransliteration',
 	LSVAR_STARTING_BANI = 'startingBani',
@@ -22,6 +27,7 @@ var BANI_AKV_VALUE = 'akv',
 	LSVAR_SCORE_PLAYED = 'played_',
 	LSVAR_SCORE_CORRECT = 'correct_',
 	LSVAR_SCORE_QUIZ_WON = 'quiz_won_',
+	LSVAR_ANS_INCORRECT = 'incorrect_',
 
 	TITLE_CORRECT = 'CORRECT',
 	TITLE_INCORRECT = 'INCORRECT',

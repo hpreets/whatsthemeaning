@@ -1,0 +1,74 @@
+<ion-view ng-title="title" hide-back-button="true">
+  <ion-nav-bar ng-class="barType">
+    <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right" ng-if="answer">
+    <button class="button button-icon icon ion-arrow-right-b" ng-show="!isComplete" ng-click='goQuestion()'></button>
+    <a class="button button-icon icon ion-checkmark-circled" ng-show="isComplete" ng-click='goToScore()'></a>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <div class="progress-bar" >
+    <progress max="10" value="{{score}}" class="blue-range blue"></progress>
+  </div>
+  <ion-content class="has-header text-center" style="margin-top:5px; background-color:black">
+  <div ng-if="stage=='question' || stage=='tuk'" class="reveal-q-animation">
+    <div class="">
+      <div class="item item-text-wrap item-ques-page">
+        <span class="punj-large" style="line-height:1.3; font-family: GurbaniAkhar">
+          {{questionPunjParts[0]}} <span style="color:red">{{wordPunj}}</span> {{questionPunjParts[1]}}
+          <span class="item-icon" ng-click="modal.show()" ng-show="shabad"><i class="icon ion-help-circled royal"></i></span>
+        </span>
+        <!--button class="button" ng-click="modal.show()">Open Modal</button -->
+        <span ng-hide="!showTranslit"><br /> {{questionEngParts[0]}} <span style="color:red">{{wordEng}}</span> {{questionEngParts[1]}}</span>
+      </div>
+      <div ng-if="stage=='question'" class="item item-text-wrap item-ques-page" style="font-size:24px;line-height:1.3">
+        <span class="punj-x-large">{{wordPunj}}</span> <span ng-hide="!showTranslit">/ {{wordEng}}</span>
+      </div>
+    </div>
+      <div ng-if="stage=='question'" class="reveal-o-animation">
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[0][0]}}")' ><span class="punj-medium">{{options[0][1]}} / </span>{{options[0][0]}}</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[1][0]}}")' ><span class="punj-medium">{{options[1][1]}} / </span>{{options[1][0]}}</button>
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[2][0]}}")' ><span class="punj-medium">{{options[2][1]}} / </span>{{options[2][0]}}</button>
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[3][0]}}")' ><span class="punj-medium">{{options[3][1]}} / </span>{{options[3][0]}}</button>
+      </div>
+      <div ng-if="stage=='tuk'" class="reveal-o-animation">
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='askQuestion()' ><span class="punj-medium">suAwl pu~Co / </span>Ask Question</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
+        <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='showMeaning()' ><span class="punj-medium">ArQ d~so / </span>Show Meaning</button>
+      </div>
+    </div>
+    <div ng-if="stage=='meaning' || stage=='fulldetail'" class="reveal-a-animation">
+    <div class="">
+      <div class="item item-text-wrap">
+      <span class="punj-medium" style="line-height:1.3; font-family: GurbaniAkhar">
+        {{quesPunj}}
+      </span>
+        <span ng-hide="!showTranslit"><br />{{quesEng}}</span>
+      </div>
+      <div ng-if="stage=='fulldetail'" class="item item-text-wrap">
+        <span class="punj-large" style="line-height:1.3;">{{wordPunj}} : {{ansPunj}}</span>
+        <span ng-hide="!showTranslit">
+          <br />
+          <span class="" >{{wordEng}} : </span>
+        </span>
+        <span ng-hide="showTranslit"> / </span>
+        {{ansEng}}
+      </div>
+      <div class="item item-text-wrap punj-medium padding" style="line-height:1.3;">{{explPunj}}</div>
+      <div class="item item-text-wrap">{{explEng}}</div>
+    </div>
+    <div ng-if="stage=='meaning'" class="reveal-o-animation">
+      <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='askQuestion()' ><span class="punj-medium">suAwl pu~Co / </span>Ask Question</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
+    </div>
+    <div ng-if="stage=='fulldetail'" class="reveal-o-animation">
+      <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='showNextTuk()' ><span class="punj-medium">AglI quk / </span>Show Next Tuk</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
+    </div>
+    <!--div class="padding">
+      <a class="button button-block button-small button-positive" ng-show="!isComplete" href="#/app/ques">Next Question</a>
+      <a class="button button-block button-small button-positive" ng-show="isComplete" href="#/app/score">Score </a>
+    </div-->
+  </div>
+  </ion-content>
+
+</ion-view>
+

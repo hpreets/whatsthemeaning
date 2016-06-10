@@ -1,0 +1,18 @@
+<ion-view title="Incorrect" hide-back-button="true">
+  <ion-nav-bar class="bar-positive">
+	  <ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	  </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content class="has-header">
+    <span>
+        <div class="" ng-repeat="bani in banisIncorrect">
+          <a class="item " ng-href="{{bani.detUrl}}">
+            {{bani.name}}
+            <span class="badge badge-assertive">{{bani.count}}</span>
+          </a>
+        </div>
+    </span>
+  </ion-content>
+
+</ion-view>

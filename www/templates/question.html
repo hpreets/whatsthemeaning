@@ -1,15 +1,28 @@
 <ion-view ng-title="title" hide-back-button="true">
-  <ion-nav-bar ng-class="barType">
+  <ion-nav-bar ng-class="barType"> <!-- ion-nav-bar ng-class="barType" -->
 	  <ion-nav-buttons side="left">
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	  </ion-nav-buttons>
 	  <ion-nav-buttons side="right" ng-if="answer">
 		<button class="button button-icon icon ion-arrow-right-b" ng-show="!isComplete" ng-click='goQuestion()'></button>
-		<a class="button button-icon icon ion-checkmark-circled" ng-show="isComplete" href="#/app/score"></a>
+		<a class="button button-icon icon ion-checkmark-circled" ng-show="isComplete" ng-click='goToScore()'></a>
 	  </ion-nav-buttons>
   </ion-nav-bar>
-  <ion-content class="has-header text-center">
-	<div ng-if="!answer" class="reveal-q-animation">
+  <div class="progress-bar" >
+    <progress max="10" value="{{score}}" class="blue-range blue"></progress>
+  </div>
+  <ion-content class="has-header text-center" style="margin-top:5px; background-color:black">
+  	<div ng-if="stage=='before-question'" class="reveal-o-animation">
+  		<div style="font-size:48px; margin-top:50px;">
+  			<!--{ { questionProgress } }-->
+  		</div>
+  	</div>
+  	<div ng-if="stage=='before-answer'" class="reveal-q-animation">
+  		<div>
+  			<!--Correct / Incorrect-->
+  		</div>
+  	</div>
+	<div ng-if="stage=='question'" class="reveal-q-animation">
 		<div class="">
 			<div class="item item-text-wrap item-ques-page">
 				<span class="punj-large" style="line-height:1.3; font-family: GurbaniAkhar">
@@ -24,13 +37,13 @@
 			</div>
 		</div>
 	    <div ng-if="showOptions" class="reveal-o-animation">
-            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[0][0]}}")'><span class="punj-medium">{{options[0][1]}} / </span>{{options[0][0]}}</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
-            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[1][0]}}")'><span class="punj-medium">{{options[1][1]}} / </span>{{options[1][0]}}</button>
-            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[2][0]}}")'><span class="punj-medium">{{options[2][1]}} / </span>{{options[2][0]}}</button>
-            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[3][0]}}")'><span class="punj-medium">{{options[3][1]}} / </span>{{options[3][0]}}</button>
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[0][0]}}")' ><span class="punj-medium">{{options[0][1]}} / </span>{{options[0][0]}}</button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" -->
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[1][0]}}")' ><span class="punj-medium">{{options[1][1]}} / </span>{{options[1][0]}}</button>
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[2][0]}}")' ><span class="punj-medium">{{options[2][1]}} / </span>{{options[2][0]}}</button>
+            <button style="font-size:18px" class="button button-block button-positive ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[3][0]}}")' ><span class="punj-medium">{{options[3][1]}} / </span>{{options[3][0]}}</button>
 	    </div>
 	  </div>
- 	  <div ng-if="answer" class="reveal-a-animation">
+ 	  <div ng-if="stage=='answer'" class="reveal-a-animation">
 		<div class="">
 			<div class="item item-text-wrap">
 			<span class="punj-medium" style="line-height:1.3; font-family: GurbaniAkhar">
@@ -58,7 +71,7 @@
   </ion-content>
 	<div class="tabs psd-tab" ng-if="answer" class="reveal-a-animation">
 		<div class="tab-item psd-tab-item" ng-show="!isComplete" ng-click='goQuestion()'><i class="icon ion-arrow-right-b psd-icon-home"></i></div>
-		<div class="tab-item psd-tab-item" ng-show="isComplete" ui-sref="app.score"><i class="icon ion-checkmark-circled psd-icon-home"></i></div>
+		<div class="tab-item psd-tab-item" ng-show="isComplete" ng-click='goToScore()'><i class="icon ion-checkmark-circled psd-icon-home"></i></div>
 	</div>
 
 </ion-view>

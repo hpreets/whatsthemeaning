@@ -130,17 +130,32 @@ progress[value] {
   border-bottom:1px solid;
 }
 progress.blue[value]::-webkit-progress-value {
-  background-color:#5bc0de;
-  background-image:0 33% 66% 66in;
+  /*background-color:#5bc0de;*/
+  /*background-image:0 33% 66% 66in;*/
   background-size:35px 20px 100% 100%;
   -webkit-animation:animate-stripes 5s linear infinite;
   animation:animate-stripes 5s linear infinite;
   -webkit-transition:width .6s ease;
   -o-transition:width .6s ease;
   transition:width .6s ease;
+  background-image:
+     /*-webkit-linear-gradient(-45deg, 
+                             transparent 33%, rgba(0, 0, 0, .1) 33%, 
+                             rgba(0,0, 0, .1) 66%, transparent 66%),*/
+     -webkit-linear-gradient(top, 
+                             rgba(255, 255, 255, .25), 
+                             rgba(0, 0, 0, .25)),
+     -webkit-linear-gradient(left, #09c, #f44);
+
 }
 .addtoredprog {
   box-shadow:0 2px 60px 5px;
   border-left:1px solid;
   border-right:1px solid;
+}
+.nav-button {
+  font-size:18px;
+  line-height:25px;
+  height:45px;
+  min-height:50px
 }

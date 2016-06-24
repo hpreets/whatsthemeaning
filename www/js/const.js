@@ -28,6 +28,7 @@ var BANI_AKV_VALUE = 'akv',
 	LSVAR_SCORE_CORRECT = 'correct_',
 	LSVAR_SCORE_QUIZ_WON = 'quiz_won_',
 	LSVAR_ANS_INCORRECT = 'incorrect_',
+	LSVAR_IS_LEARN_MODE = 'islearnmode',
 
 	TITLE_CORRECT = 'CORRECT',
 	TITLE_INCORRECT = 'INCORRECT',

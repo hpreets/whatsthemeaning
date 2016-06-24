@@ -377,7 +377,10 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
     },
     getObject: function(key) {
       return JSON.parse($window.localStorage[key] || '{}');
-    }
+    },
+    getLearnMode: function(defaultValue) {
+      return $window.localStorage[LSVAR_IS_LEARN_MODE] || defaultValue;
+    },
   }
 })
 

@@ -57,7 +57,15 @@ angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services', 'ngCordova'])
         }
       }
     })
-
+    .state('app.firstlearn', {
+      url: "/learn/:reset/:bani",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/learnmode.html",
+          controller: 'QuestionCtrl'
+        }
+      }
+    })
     .state('app.playagain', {
       url: "/ques/:reset",
       views: {
@@ -81,7 +89,7 @@ angular.module('wtm', ['ionic', 'wtm.controllers', 'wtm.services', 'ngCordova'])
       views: {
         'menuContent' :{
           templateUrl: "templates/learnmode.html",
-          controller: 'LearnCtrl'
+          controller: 'QuestionCtrl'
         }
       }
     })

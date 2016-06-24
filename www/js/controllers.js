@@ -20,6 +20,7 @@ angular.module('wtm.controllers', [])
 
 .controller('QuestionCtrl', function ($scope, $stateParams, $localstorage, $timeout, $ionicModal, Question, CommonUtils, $ionicPopup, $ionicBackdrop, $ionicLoading, $location) {
 	var debugMode = true;
+	var learnMode = $localstorage.getLearnMode(false) === 'true';
 	$scope.showTranslit = $localstorage.get(LSVAR_SHOW_TRANSLITERATION, false) === 'true';
 	if ($localstorage.get(LSVAR_ASK_SERIALLY, false) === 'true') Question.checkSerially(); else Question.checkRandomly();
 	// Question.checkSerially();
@@ -33,17 +34,131 @@ angular.module('wtm.controllers', [])
 		Question.setBani($stateParams.bani);
 	}
 
-
-    /*playSound = function(e) {
-        MediaService.loadMedia("sounds/" + e).then(function(e) {
-            e.play();
-        })
-    }*/
-
 	$scope.goQuestion = function() {
-		$scope.stage='before-question'; // $scope.answer = false;
-		$scope.answer = false;
+		hideAllSections();
 		$ionicBackdrop.retain();
+		if (!learnMode) fetchQuestion($stateParams.bani);
+
+		setModelDialog('./templates/modal.html', 'slide-in-up');
+		var myPopup = createPopupObject('<h1 class="text-center" style="align:center">{{questionProgress}}</h1>', 'Question', '');
+		$timeout(function() {
+			$scope.showTuk = true;
+			$scope.showQuesWord = true;
+			$scope.show4Options = false;
+			$scope.showAnsWord = false;
+			$scope.showMeaning = false;
+			$scope.showBtnGoQues = false;
+			$scope.showBtnGoMeaning = false;
+			$scope.showBtnGoTuk = false;
+			$scope.qwordStyle = 'color:red';
+
+			$scope.stage='before-question';
+			// $timeout(function() {
+				myPopup.close();
+				$ionicBackdrop.release();
+				$scope.stage='question';
+				$timeout(function() {
+					$scope.showOptions = true;
+					$scope.show4Options = true;
+				}, 0); // 2000
+			//}, 750); // 750
+		}, 750);
+	}
+
+	$scope.goTuk = function() {
+		if (learnMode) {
+			$scope.showTuk = true;
+			$scope.showQuesWord = false;
+			$scope.show4Options = false;
+			$scope.showAnsWord = false;
+			$scope.showMeaning = false;
+			$scope.showBtnGoQues = true;
+			$scope.showBtnGoMeaning = true;
+			$scope.showBtnGoTuk = false;
+			$scope.qwordStyle = '';
+			fetchQuestion($stateParams.bani);
+		}
+		else {
+			$scope.goQuestion();
+		}
+	}
+
+	$scope.goMeaning = function() {
+		$scope.showTuk = true;
+		$scope.showQuesWord = false;
+		$scope.show4Options = false;
+		$scope.showAnsWord = false;
+		$scope.showMeaning = true;
+		$scope.showBtnGoQues = true;
+		$scope.showBtnGoMeaning = false;
+		$scope.showBtnGoTuk = false;
+		$scope.qwordStyle = '';
+	}
+
+	$scope.goAnswer = function(quesId, optionId, selectedAns) {
+		hideAllSections();
+		addCurrQuesTrackerToStorage(Question.isSerial(), $stateParams.bani, Number(quesId)+1);
+		var isCorrect = Question.validate($scope.ques, selectedAns);
+		addScoreToStorage($stateParams.bani, isCorrect, Question.isComplete());
+		addIncorrectToStorage($stateParams.bani, isCorrect, quesId, optionId);
+		$scope.resultText = 'INCORRECT';
+		if (isCorrect) $scope.resultText = 'CORRECT';
+
+		// An elaborate, custom popup -- http://codepen.io/ionic/pen/zkmhJ
+		var myPopup = $ionicPopup.show({
+			template: '<h2 class="text-center" style="align:center">{{resultText}}</h2>', // '<span style="align:center"><img src="./../img/faces/incorrect2.jpg"></img></span>'
+			title: '',
+			subTitle: $scope.resultText,
+			scope: $scope,
+		});
+		$timeout(function() {
+			$scope.showTuk = true;
+			$scope.showQuesWord = false;
+			$scope.show4Options = false;
+			$scope.showAnsWord = true;
+			$scope.showMeaning = true;
+			$scope.showBtnGoQues = false;
+			$scope.showBtnGoMeaning = false;
+			$scope.showBtnGoTuk = true;
+			$scope.qwordStyle = 'color:red';
+
+			$scope.stage = 'answer';
+			$scope.answer = true;
+			$scope.showOptions = false;
+			$scope.selAns = selectedAns;
+			$scope.isComplete = Question.isComplete();
+			$scope.progressText = Question.scoreText();
+			
+			if ($scope.selAns == $scope.ansEng) {
+				$scope.barType = 'bar-balanced'; 
+				$scope.title = 'CORRECT';
+			}
+			else { 
+				$scope.barType = 'bar-assertive' 
+				$scope.title = 'INCORRECT';
+			};
+			
+			$scope.title += ' | Score: ' + $scope.progressText;
+			console.log('Questions for "' + $stateParams.bani + '" completed till :: ' + $localstorage.get(LSVAR_QUES_COMPLETED_TILL + $stateParams.bani));
+			myPopup.close();
+			$scope.score = Question.success();
+		}, 750); // 750
+	}
+
+	hideAllSections = function() {
+		$scope.showTuk = false;
+		$scope.showQuesWord = false;
+		$scope.show4Options = false;
+		$scope.showAnsWord = false;
+		$scope.showMeaning = false;
+		$scope.showBtnGoQues = false;
+		$scope.showBtnGoMeaning = false;
+		$scope.showBtnGoTuk = false;
+		$scope.qwordStyle = '';
+	}
+
+	fetchQuestion = function(bani) {
+		$scope.answer = false;
 		
 		var quesCompletedTill = $localstorage.get('qCompTill_' + $stateParams.bani, 0);
 
@@ -52,6 +167,11 @@ angular.module('wtm.controllers', [])
 		// $scope.ques = Question.get("102", "102_0");
 		// console.log('$scope.ques :::' + $scope.ques.quesEng);
 		// console.log('$scope.ques :::' + JSON.stringify($scope.ques));
+
+		setScopeVarsForQuestion();
+	}
+
+	setScopeVarsForQuestion = function() {
 
 		$scope.option = $scope.ques.qOpt; // Question.getOptions($scope.ques);
 		$scope.wordPunj = $scope.option.wordPunj;
@@ -74,35 +194,25 @@ angular.module('wtm.controllers', [])
 		
 		$scope.score = Question.success();
 
-		// An elaborate, custom popup -- http://codepen.io/ionic/pen/zkmhJ
-		var myPopup = $ionicPopup.show({
-			template: '<h1 class="text-center" style="align:center">{{questionProgress}}</h1>',
-			title: 'Question',
-			subTitle: '',
-			scope: $scope,
-		});
-
-		$timeout(function() {
-			myPopup.close(); //close the popup after 3 seconds for some reason
-			$ionicBackdrop.release();
-			$scope.stage='question';
-			$timeout(function() {
-				$scope.showOptions = true;
-			}, 2000); // 2000
-		}, 750); // 750
-
 		$scope.shabad = $scope.ques.shbd != null ? getSplittedTuk($scope.ques.shbd.shabdPunj, $scope.ques.quesPunj) : null;
 		$scope.tuk = $scope.ques.quesPunj;
-		$ionicModal.fromTemplateUrl('./templates/modal.html', {
+		$scope.explEng = $scope.ques.explEng;
+		$scope.explPunj = $scope.ques.explPunj.split(' *** ');
+		$scope.ansEng = $scope.option.ansEng;
+		$scope.ansPunj = $scope.option.ansPunj;
+	};
+
+	setModelDialog = function(modelUrl, animation) {
+		$ionicModal.fromTemplateUrl(modelUrl, {
 		    scope: $scope,
-		    animation: 'slide-in-up'
+		    animation: animation
 		}).then(function(modal) {
 		    $scope.modal = modal
-		})  
+		});
 
 		$scope.openModal = function() {
-		    $scope.modal.show()
-		}
+		    $scope.modal.show();
+		};
 
 		$scope.closeModal = function() {
 		    $scope.modal.hide();
@@ -111,9 +221,20 @@ angular.module('wtm.controllers', [])
 		$scope.$on('$destroy', function() {
 		    $scope.modal.remove();
 		});
-
 	};
+
 	
+	createPopupObject = function(template, title, subTitle) {
+		// An elaborate, custom popup -- http://codepen.io/ionic/pen/zkmhJ
+		var myPopup = $ionicPopup.show({
+			template: '<h1 class="text-center" style="align:center">{{questionProgress}}</h1>',
+			title: 'Question',
+			subTitle: '',
+			scope: $scope,
+		});
+		return myPopup;
+	}
+
 	getSplittedTuk = function(tuk, word) {
 		var splitArr = tuk.split(word);
 		if (_.size(splitArr) > 2) {
@@ -152,6 +273,10 @@ angular.module('wtm.controllers', [])
 		}
 	}
 
+	addCurrQuesTrackerToStorage = function (isSerial, bani, quesId) {
+		if (isSerial) $localstorage.set(LSVAR_QUES_COMPLETED_TILL + bani, quesId);
+	}
+
 	getNumber = function(inputParam) {
 		if (isNaN(inputParam)) return 0; else return Number(inputParam);
 	}
@@ -160,112 +285,112 @@ angular.module('wtm.controllers', [])
 		$location.path('/app/score');
 	}
 
-	$scope.goAnswer = function(quesId, optionId, selectedAns) {
+	// goAnswerScope = function(quesId, optionId, selectedAns) {
 
-		// $scope.ques = Question.validateAndGet(quesId, optionId, selectedAns); // This resulted in jumping of another question while serial
-		if (Question.isSerial()) $localstorage.set(LSVAR_QUES_COMPLETED_TILL + $stateParams.bani, Number(quesId)+1);
-		var isCorrect = Question.validate($scope.ques, selectedAns);
-		/*if (isCorrect) playSound('correct.wav'); else playSound('wrong.wav');*/
+	// 	// $scope.ques = Question.validateAndGet(quesId, optionId, selectedAns); // This resulted in jumping of another question while serial
+	// 	if (Question.isSerial()) addCurrQuesTrackerToStorage(Question.isSerial(), $stateParams.bani, Number(quesId)+1); // $localstorage.set(LSVAR_QUES_COMPLETED_TILL + $stateParams.bani, Number(quesId)+1);
+	// 	var isCorrect = Question.validate($scope.ques, selectedAns);
+	// 	/*if (isCorrect) playSound('correct.wav'); else playSound('wrong.wav');*/
 
-		// update scores
-		addScoreToStorage($stateParams.bani, isCorrect, Question.isComplete());
-		// update incorrect list
-		addIncorrectToStorage($stateParams.bani, isCorrect, quesId, optionId);
+	// 	// update scores
+	// 	addScoreToStorage($stateParams.bani, isCorrect, Question.isComplete());
+	// 	// update incorrect list
+	// 	addIncorrectToStorage($stateParams.bani, isCorrect, quesId, optionId);
 
-		$scope.quesEng = $scope.ques.quesEng;
-		$scope.quesPunj = $scope.ques.quesPunj.replace(/,/g, "");
-		$scope.option = $scope.ques.qOpt;
-		$scope.wordEng = $scope.option.wordEng;
-		$scope.wordPunj = $scope.option.wordPunj;
-		$scope.ansEng = $scope.option.ansEng;
-		$scope.ansPunj = $scope.option.ansPunj;
-		$scope.explEng = $scope.ques.explEng;
-		$scope.explPunj = $scope.ques.explPunj;
-		$scope.answer = true;
-		$scope.isCorrect = isCorrect;
-		$scope.score = Question.success();
+	// 	$scope.quesEng = $scope.ques.quesEng;
+	// 	$scope.quesPunj = $scope.ques.quesPunj.replace(/,/g, "");
+	// 	$scope.option = $scope.ques.qOpt;
+	// 	$scope.wordEng = $scope.option.wordEng;
+	// 	$scope.wordPunj = $scope.option.wordPunj;
+	// 	$scope.ansEng = $scope.option.ansEng;
+	// 	$scope.ansPunj = $scope.option.ansPunj;
+	// 	$scope.explEng = $scope.ques.explEng;
+	// 	$scope.explPunj = $scope.ques.explPunj;
+	// 	$scope.answer = true;
+	// 	$scope.isCorrect = isCorrect;
+	// 	$scope.score = Question.success();
 		
-		$scope.stage = 'before-answer';
-		$scope.resultText = 'INCORRECT';
-		if (isCorrect) $scope.resultText = 'CORRECT';
+	// 	$scope.stage = 'before-answer';
+	// 	$scope.resultText = 'INCORRECT';
+	// 	if (isCorrect) $scope.resultText = 'CORRECT';
 
-		// An elaborate, custom popup -- http://codepen.io/ionic/pen/zkmhJ
-		var myPopup = $ionicPopup.show({
-			template: '<h2 class="text-center" style="align:center">{{resultText}}</h2>', // '<span style="align:center"><img src="./../img/faces/incorrect2.jpg"></img></span>'
-			title: '',
-			subTitle: $scope.resultText,
-			scope: $scope,
-		});
+	// 	// An elaborate, custom popup -- http://codepen.io/ionic/pen/zkmhJ
+	// 	var myPopup = $ionicPopup.show({
+	// 		template: '<h2 class="text-center" style="align:center">{{resultText}}</h2>', // '<span style="align:center"><img src="./../img/faces/incorrect2.jpg"></img></span>'
+	// 		title: '',
+	// 		subTitle: $scope.resultText,
+	// 		scope: $scope,
+	// 	});
 
-		$timeout(function() {
-			myPopup.close();
-			$scope.stage = 'answer';
-			$scope.answer = true;
-			$scope.showOptions = false;
-			$scope.selAns = selectedAns;
-			$scope.isComplete = Question.isComplete();
-			$scope.progressText = Question.scoreText();
+	// 	$timeout(function() {
+	// 		myPopup.close();
+	// 		$scope.stage = 'answer';
+	// 		$scope.answer = true;
+	// 		$scope.showOptions = false;
+	// 		$scope.selAns = selectedAns;
+	// 		$scope.isComplete = Question.isComplete();
+	// 		$scope.progressText = Question.scoreText();
 			
-			if ($scope.selAns == $scope.ansEng) {
-				$scope.barType = 'bar-balanced'; 
-				$scope.title = 'CORRECT';
-			}
-			else { 
-				$scope.barType = 'bar-assertive' 
-				$scope.title = 'INCORRECT';
-			};
+	// 		if ($scope.selAns == $scope.ansEng) {
+	// 			$scope.barType = 'bar-balanced'; 
+	// 			$scope.title = 'CORRECT';
+	// 		}
+	// 		else { 
+	// 			$scope.barType = 'bar-assertive' 
+	// 			$scope.title = 'INCORRECT';
+	// 		};
 			
-			$scope.title += ' | Score: ' + $scope.progressText;
-			console.log('Questions for "' + $stateParams.bani + '" completed till :: ' + $localstorage.get(LSVAR_QUES_COMPLETED_TILL + $stateParams.bani));
-		}, 750); // 750
-	};
+	// 		$scope.title += ' | Score: ' + $scope.progressText;
+	// 		console.log('Questions for "' + $stateParams.bani + '" completed till :: ' + $localstorage.get(LSVAR_QUES_COMPLETED_TILL + $stateParams.bani));
+	// 	}, 750); // 750
+	// };
 
-	open = $scope.goQuestion();
+	open = $scope.goTuk();
 })
 
-.controller('AnswerCtrl', function ($scope, $stateParams, $state, $ionicGesture, $localstorage, Question) {
-	$scope.showTranslit = $localstorage.get(LSVAR_SHOW_TRANSLITERATION, false) === 'true';
-	$scope.ques = Question.validateAndGet($stateParams.qId, $stateParams.oId, $stateParams.selAns);
-	$scope.option = $scope.ques.qOpt; // Question.getOptions($scope.ques);
+// .controller('AnswerCtrl', function ($scope, $stateParams, $state, $ionicGesture, $localstorage, Question) {
+// 	$scope.showTranslit = $localstorage.get(LSVAR_SHOW_TRANSLITERATION, false) === 'true';
+// 	$scope.ques = Question.validateAndGet($stateParams.qId, $stateParams.oId, $stateParams.selAns);
+// 	$scope.option = $scope.ques.qOpt; // Question.getOptions($scope.ques);
 
-	$scope.quesEng = $scope.ques.quesEng;
-	$scope.quesPunj = $scope.ques.quesPunj;
-	$scope.wordEng = $scope.option.wordEng;
-	$scope.wordPunj = $scope.option.wordPunj;
-	$scope.ansEng = $scope.option.ansEng;
-	$scope.ansPunj = $scope.option.ansPunj;
-	$scope.explEng = $scope.ques.explEng;
-	$scope.explPunj = $scope.ques.explPunj;
-	$scope.selAns = $stateParams.selAns;
+// 	$scope.quesEng = $scope.ques.quesEng;
+// 	$scope.quesPunj = $scope.ques.quesPunj;
+// 	$scope.wordEng = $scope.option.wordEng;
+// 	$scope.wordPunj = $scope.option.wordPunj;
+// 	$scope.ansEng = $scope.option.ansEng;
+// 	$scope.ansPunj = $scope.option.ansPunj;
+// 	$scope.explEng = $scope.ques.explEng;
+// 	$scope.explPunj = $scope.ques.explPunj;
+// 	$scope.selAns = $stateParams.selAns;
 
-	$scope.isComplete = Question.isComplete();
-	$scope.progressText = Question.scoreText();
+// 	$scope.isComplete = Question.isComplete();
+// 	$scope.progressText = Question.scoreText();
 	
-	if ($scope.selAns == $scope.ansEng) { 
-		$scope.barType = 'bar-balanced'; 
-		$scope.title = 'CORRECT';
-	}
-	else { 
-		$scope.barType = 'bar-assertive' 
-		$scope.title = 'INCORRECT';
-	};
-	$scope.title += ' | Score: ' + $scope.progressText;
+// 	if ($scope.selAns == $scope.ansEng) { 
+// 		$scope.barType = 'bar-balanced'; 
+// 		$scope.title = 'CORRECT';
+// 	}
+// 	else { 
+// 		$scope.barType = 'bar-assertive' 
+// 		$scope.title = 'INCORRECT';
+// 	};
+// 	$scope.title += ' | Score: ' + $scope.progressText;
 	
-    var element = angular.element(document.querySelector('#answerDetails'));
-	$ionicGesture.on('dragleft', function (event) {
-      $scope.$apply(function () {
-        if ($scope.isComplete) $state.go('app.score'); else $state.go('app.ques');
-      });
-    }, element);
+//     var element = angular.element(document.querySelector('#answerDetails'));
+// 	$ionicGesture.on('dragleft', function (event) {
+//       $scope.$apply(function () {
+//         if ($scope.isComplete) $state.go('app.score'); else $state.go('app.ques');
+//       });
+//     }, element);
 
-	/*$scope.swipeLeft = function() {
-		if ($scope.isComplete) 
-			$rootScope.go('/score'); 
-		else 
-			$rootScope.go('/ques');
-	}*/
-	// $scope.getDebugInfo = Question.debugGetDebugInfo();
-})
+// 	/*$scope.swipeLeft = function() {
+// 		if ($scope.isComplete) 
+// 			$rootScope.go('/score'); 
+// 		else 
+// 			$rootScope.go('/ques');
+// 	}*/
+// 	// $scope.getDebugInfo = Question.debugGetDebugInfo();
+// })
 
 .controller('ScoreCtrl', function ($scope, $localstorage, $location, Question) {
 	$scope.showTranslit = $localstorage.get(LSVAR_SHOW_TRANSLITERATION, false) === 'true';
@@ -276,6 +401,9 @@ angular.module('wtm.controllers', [])
 	$scope.bani = Question.getBani();
 
 	$scope.goToQuestion = function() {
+		var learnMode = $localstorage.getLearnMode(false);
+		/*if (learnMode) $location.path('/app/learn/true/' + $scope.bani);
+		else */
 		$location.path('/app/ques/true/' + $scope.bani);
 	}
 })
@@ -284,13 +412,9 @@ angular.module('wtm.controllers', [])
 	$scope.data = {};
 	$scope.data.showTranslit = $localstorage.get(LSVAR_SHOW_TRANSLITERATION, 'false') === 'true';
 	$scope.data.startingBani = $localstorage.get(LSVAR_STARTING_BANI, CONFIG_STARTING_BANI);
-	$scope.data.startingBaniList = BANI_LIST; /*[
-		{ text: "Asa Di Vaar", value: "akv" },
-		{ text: "Japji", value: "japji" },
-		{ text: "Assorted", value: "misc" },
-		{ text: "Salok M:9", value: "slokm9" }
-	];*/
+	$scope.data.startingBaniList = BANI_LIST;
 	$scope.data.askSerially = $localstorage.get(LSVAR_ASK_SERIALLY, 'false') === 'true';
+	$scope.data.learnMode = $localstorage.get(LSVAR_IS_LEARN_MODE, 'false') === 'true';
   
 	$scope.updateTranslit = function() {
 		$localstorage.set(LSVAR_SHOW_TRANSLITERATION, $scope.data.showTranslit);
@@ -303,6 +427,9 @@ angular.module('wtm.controllers', [])
 	$scope.updateAskSerially = function() {
 		$localstorage.set(LSVAR_ASK_SERIALLY, $scope.data.askSerially);
 		if ($scope.data.askSerially) Question.checkSerially(); else Question.checkRandomly();
+	};
+	$scope.updateLearnMode = function() {
+		$localstorage.set(LSVAR_IS_LEARN_MODE, $scope.data.learnMode);
 	};
 })
 

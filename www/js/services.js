@@ -71,6 +71,7 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			}
 			ques.qOpt = opt;
 		}
+		// console.log('ques ::::' + JSON.stringify(ques));
 		console.log('ques.shabadId ::::' + ques.shabadId);
 		ques.shbd = getShabadById(ques.shabadId);
 		console.log('ques.shbd ::::' + ques.shbd);
@@ -243,6 +244,12 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			shabads = null;
 			maxRandomIntSetSize = 100;
 		}
+		else if (bani == BANI_SLOKFRD_VALUE) {
+			questions = slokfrdtuks;
+			options = slokfrdques;
+			shabads = slokfrdshbd;
+			maxRandomIntSetSize = 100;
+		}
 		else {
 			questions = misctuks;
 			options = miscques;
@@ -410,6 +417,14 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 	    }
 	}
 }])
+
+.factory('BaniTopics', function() {
+  return {
+    getBaniTopics: function() {
+      return BANI_TOPICS;
+    }
+  }
+})
 
 /*.factory("MediaService", ["$q", "$ionicPlatform", "$window", function(e, t, n) {
     function o(o) {

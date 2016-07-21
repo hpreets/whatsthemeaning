@@ -9,13 +9,42 @@ angular.module('wtm.controllers', [])
 
 })
 
-.controller('HomeCtrl', function ($scope, $localstorage, $timeout, Question) {
+.controller('HomeCtrl', function ($scope, $localstorage, $timeout, Question, $ionicModal, BaniTopics, $location) {
 	Question.reset();
 	$scope.data = {};
 	$scope.startBani = $localstorage.get(LSVAR_STARTING_BANI, CONFIG_STARTING_BANI);
 	$localstorage.set(LSVAR_ASK_SERIALLY, CONFIG_DEFAULT_ASK_SERIALLY);
-
 	// $scope.startBani = 'japji';
+
+	$scope.baniTopics = BaniTopics.getBaniTopics();
+	console.log($scope.baniTopics);
+
+	$scope.openQuiz = function(baniId) {
+		$location.path('/app/ques/true/' + baniId);
+	}
+
+	setModelDialog = function(modelUrl, animation) {
+		$ionicModal.fromTemplateUrl(modelUrl, {
+		    scope: $scope,
+		    animation: animation
+		}).then(function(modal) {
+		    $scope.modal = modal
+		});
+
+		$scope.openModal = function() {
+		    $scope.modal.show();
+		};
+
+		$scope.closeModal = function() {
+		    $scope.modal.hide();
+		};
+
+		$scope.$on('$destroy', function() {
+		    $scope.modal.remove();
+		});
+	};
+
+	setModelDialog('./templates/modalhelp.html', 'slide-in-up');
 })
 
 .controller('QuestionCtrl', function ($scope, $stateParams, $localstorage, $timeout, $ionicModal, Question, CommonUtils, $ionicPopup, $ionicBackdrop, $ionicLoading, $location) {
@@ -77,6 +106,7 @@ angular.module('wtm.controllers', [])
 			$scope.showBtnGoTuk = false;
 			$scope.qwordStyle = '';
 			fetchQuestion($stateParams.bani);
+			setModelDialog('./templates/modal.html', 'slide-in-up');
 		}
 		else {
 			$scope.goQuestion();
@@ -512,20 +542,20 @@ angular.module('wtm.controllers', [])
 	var baniColors = [ "#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360" ];
 	var played = [], correct = [], allQuiz = [];
 	var totalP = 0, totalW = 0, totalA = 0;
-	for (var i = 0; i < BANI_LIST.length; i++) {
-		var score = { played: 0, correct: 0, allQuiz: 0, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: BANI_LIST[i], color: baniColors[i] };
+	for (var i = 0; i < BANI_LIST_ADV.length; i++) {
+		var score = { played: 0, correct: 0, allQuiz: 0, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: BANI_LIST_ADV[i] };
 		// console.log('BANI_LIST[i]:::' + i + '---' + BANI_LIST[i].value + '---' + BANI_LIST[i].text);
-		score.played = $localstorage.get(LSVAR_SCORE_PLAYED + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		score.played = $localstorage.get(LSVAR_SCORE_PLAYED + BANI_LIST_ADV[i].baniId, 0); // (Math.random()*100).toPrecision(2));
 		totalP += Number(score.played);
-		score.correct = $localstorage.get(LSVAR_SCORE_CORRECT + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		score.correct = $localstorage.get(LSVAR_SCORE_CORRECT + BANI_LIST_ADV[i].baniId, 0); // (Math.random()*100).toPrecision(2));
 		totalW += Number(score.correct);
-		score.allQuiz = $localstorage.get(LSVAR_SCORE_QUIZ_WON + BANI_LIST[i].value, 0); // (Math.random()*100).toPrecision(2));
+		score.allQuiz = $localstorage.get(LSVAR_SCORE_QUIZ_WON + BANI_LIST_ADV[i].baniId, 0); // (Math.random()*100).toPrecision(2));
 		totalA += Number(score.allQuiz);
 		baniScores.push(score);
 
-		played.push({ value: score.played, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
-		correct.push({ value: score.correct, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
-		allQuiz.push({ value: score.allQuiz, color:baniColors[i], highlight: baniColors[i], label: BANI_LIST[i].text});
+		played.push({ value: score.played, color:BANI_LIST_ADV[i].backColor, highlight: BANI_LIST_ADV[i].backColor, label: BANI_LIST_ADV[i].engText});
+		correct.push({ value: score.correct, color:BANI_LIST_ADV[i].backColor, highlight: BANI_LIST_ADV[i].backColor, label: BANI_LIST_ADV[i].engText});
+		allQuiz.push({ value: score.allQuiz, color:BANI_LIST_ADV[i].backColor, highlight: BANI_LIST_ADV[i].backColor, label: BANI_LIST_ADV[i].engText});
 	}
 	var score = { played: totalP, correct: totalW, allQuiz: totalA, labelPlayed: SCORE_LABEL_PLAYED, labelCorrect: SCORE_LABEL_CORRECT, labelAllQuiz: SCORE_LABEL_QUIZ_WON, bani: 'Total', color: '' };
 	baniScores.push(score);

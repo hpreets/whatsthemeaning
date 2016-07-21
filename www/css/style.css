@@ -159,3 +159,30 @@ progress.blue[value]::-webkit-progress-value {
   height:45px;
   min-height:50px
 }
+
+.topics-page-card {
+margin:0!important;
+padding:0!important;
+border-radius:5px;
+}
+
+.topic-name-topic {
+background-color:#f8f8f8;
+height:44px;
+width:100%;
+color:#777;
+padding:11px 20px 11px 5px;
+}
+.card div.topics-img {
+/*display:block;*/
+/*width:64px;*/
+font-size:22px;
+height:24px;
+margin:42px auto;
+}
+.homeTopicCol {
+    /*border: solid 0px grey;
+    border-bottom-style: none;
+    border-right-style: none;*/
+    background-color: transparent;
+}

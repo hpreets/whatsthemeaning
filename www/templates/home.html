@@ -1,29 +1,39 @@
-<ion-view title="Welcome">
+<ion-view title="Welcome to Gurbani Bodh">
   <ion-nav-bar class="bar-positive">
 	  <ion-nav-buttons side="left">
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	  </ion-nav-buttons>
 	  <ion-nav-buttons side="right">
-		<a class="button" href="#/app/ques/true/{{startBani}}">Start</a>
+    <span class="item-icon" ng-click="modal.show()" style=""><i class="button button-icon icon ion-help-circled"></i></span>
+    <!-- a class="button" href="#/app/ques/true/{startBani}">Start</a>
+    <button class="button button-icon icon ion-arrow-right-b" ng-show="!isComplete" ng-click='goQuestion()'></button>
+    <a class="button button-icon icon ion-checkmark-circled" ng-show="isComplete" ng-click='goToScore()'></a -->
 	  </ion-nav-buttons>
   </ion-nav-bar>
   <ion-content class="has-header text-center">
-        <div class="list">
-            <h2>Gurbani Bodh</h2>
-            <h4>(What's the Meaning)</h4>
-            <h4>Quiz on Gurbani Meaning</h4>
+    <div class="row" ng-repeat="topic in baniTopics">
+        <div class="col homeTopicCol">
+            <div class="card topics-page-card" ng-click="openQuiz(topic[0].baniId)" style="background-color:{{topic[0].backColor}}">
+                <div class="topics-img">
+                    <p class="punj-large" style="line-height:1.1">{{topic[0].punjText}}</p>
+                </div>
+                <div class="topic-name-topic">
+                    <p>{{topic[0].engText}} <sup ng-if="topic[0].subEngText!=''"><b>{{topic[0].subEngText}}</b></sup></p>
+                </div>
+            </div>
         </div>
-        <div>
-            We will ask you meaning of word(s) in a Gurbani Tuk with 4 options to choose from. Correct answer adds to your score. Each quiz asks 10 questions. 
-			<p>&nbsp;</p>
-            You can play as many times as you want. Quiz picks up random questions.
-			<p>&nbsp;</p>
-			Click on menu above (<span class="button-icon icon ion-navicon"></span>) or "Start" button to start your quiz. Let's see how much you score.
-			<p>&nbsp;</p>
-			All the best.
-			<!-- English translations are referred from translations from S. Kulbir Singh Thind. Punjabi translation is referred to from translation of Prof. Saheb Singh ji. -->
+        <div ng-if="topic.length > 1" class="col homeTopicCol">
+            <div class="card topics-page-card" ng-click="openQuiz(topic[1].baniId)" style="background-color:{{topic[1].backColor}}">
+                <div class="topics-img">
+                    <p class="punj-large" style="line-height:1.1">{{topic[1].punjText}}</p>
+                </div>
+                <div class="topic-name-topic">
+                    <p>{{topic[1].engText}} <sup ng-if="topic[1].subEngText!=''"><b>{{topic[1].subEngText}}</b></sup></p>
+                </div>
+            </div>
         </div>
+    </div>
+    <br>
   </ion-content>
 
 </ion-view>
-

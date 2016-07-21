@@ -13,7 +13,7 @@
       <div class="col">Perfect 10</div>
     </div>
     <div class="row" ng-repeat="score in baniScores">
-      <div class="col" style="background:{{score.color}}">{{score.bani.text ? score.bani.text : score.bani}}</div>
+      <div class="col" style="background:{{score.bani.backColor}}">{{score.bani.engText ? score.bani.engText : score.bani}}</div>
       <div class="col">{{score.played}}</div>
       <div class="col">{{score.correct}}</div>
       <div class="col">{{score.allQuiz}}</div>

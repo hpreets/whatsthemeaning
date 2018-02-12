@@ -5,6 +5,12 @@
   font-weight: normal;
   font-style: normal; 
 }
+@font-face {
+    font-family: "GurbaniHindi";
+    src: url("../fonts/Gurhindi.ttf") format("opentype");
+  font-weight: normal;
+  font-style: normal; 
+}
 .punj-small {
     font-family: "GurbaniAkhar" !important;
     font-size: 12px;
@@ -19,6 +25,22 @@
 }
 .punj-x-large {
     font-family: "GurbaniAkhar" !important;
+    font-size: 32px;
+}
+.hindi-small {
+    font-family: "GurbaniHindi" !important;
+    font-size: 12px;
+}
+.hindi-medium {
+    font-family: "GurbaniHindi" !important;
+    font-size: 18px;
+}
+.hindi-large {
+    font-family: "GurbaniHindi" !important;
+    font-size: 24px;
+}
+.hindi-x-large {
+    font-family: "GurbaniHindi" !important;
     font-size: 32px;
 }
 .scroll-content {
@@ -76,14 +98,14 @@ padding-top:2px;
 transition: 1s ease-in ;
 opacity:0;
 }
-.reveal-a-animation.ng-enter {
--webkit-transition: .5s linear all;
-transition: .5s linear all;
+/*.reveal-a-animation.ng-enter {
+-webkit-transition: 0.5s linear all;
+transition: 0.5s linear all;
 opacity:0;
-}
+}*/
 .reveal-o-animation.ng-enter {
--webkit-transition: .5s linear all ;
-transition: .5s linear all ;
+-webkit-transition: 0.5s linear all ;
+transition: 0.5s linear all ;
 opacity:0;
 }
 
@@ -185,4 +207,7 @@ margin:42px auto;
     border-bottom-style: none;
     border-right-style: none;*/
     background-color: transparent;
+}
+.btn-disabled, .button-assertive {
+  transition: 0.5s round ;
 }

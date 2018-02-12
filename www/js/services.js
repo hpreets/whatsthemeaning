@@ -87,7 +87,7 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 
 		ques = questions[qId];
 		// console.log('ques :::' + ques.quesEng);
-		// if (oId == null) oId = qId+'_'+oId;
+		if (oId == null) oId = (ques.totalQCnt == "0" ? "0" : Math.floor(Math.random()*(parseInt(ques.totalQCnt)-0+1)+0) );;
 		oId = qId+'_'+oId;
 		opt = getOptionById(oId);
 		ques.qOpt = opt;
@@ -125,6 +125,23 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			return shabad;
 		}
 		return null;
+	},
+	getAllShabads = function () {
+		var shabad = '',
+			t = questions.length,
+			i;
+/*		if (shabads != null) {
+			var l = shabads.length;
+			for (i = 0; i < l; i = i + 1) {
+				shabad += ' ' + shabads[i].shabdPunj + ' ';
+			}
+		}
+		else {*/
+			for (i = 0; i < t; i = i + 1) {
+				shabad += ' ' + questions[i].quesPunj + ' ';
+			}
+		/*}*/
+		return shabad;
 	},
 	getAllQuestions = function () {
 		var ques = [];
@@ -250,6 +267,12 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 			shabads = slokfrdshbd;
 			maxRandomIntSetSize = 100;
 		}
+		else if (bani == BANI_BARAHMM_VALUE) {
+			questions = barahmmtuks;
+			options = barahmmques;
+			shabads = barahmmshbd;
+			maxRandomIntSetSize = 100;
+		}
 		else {
 			questions = misctuks;
 			options = miscques;
@@ -368,6 +391,9 @@ miscques = [{"Id" : "0_0", "wordPunj" : "BgvI", "wordEng" : "bhagavee", "ansEng"
 						else if (percent > 80) return "Good, keep practicing";
 						else return "You need to practice more";
 					},
+					getAllShabads: function() {
+						return getAllShabads();
+					}
   }
 })
 

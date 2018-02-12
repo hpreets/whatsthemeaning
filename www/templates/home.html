@@ -16,6 +16,7 @@
             <div class="card topics-page-card" ng-click="openQuiz(topic[0].baniId)" style="background-color:{{topic[0].backColor}}">
                 <div class="topics-img">
                     <p class="punj-large" style="line-height:1.1">{{topic[0].punjText}}</p>
+                    <p ng-hide="!showHindi" class="hindi-small" style="line-height:1.1">{{topic[0].punjText.fixForHindi()}}</p>
                 </div>
                 <div class="topic-name-topic">
                     <p>{{topic[0].engText}} <sup ng-if="topic[0].subEngText!=''"><b>{{topic[0].subEngText}}</b></sup></p>
@@ -26,6 +27,7 @@
             <div class="card topics-page-card" ng-click="openQuiz(topic[1].baniId)" style="background-color:{{topic[1].backColor}}">
                 <div class="topics-img">
                     <p class="punj-large" style="line-height:1.1">{{topic[1].punjText}}</p>
+                    <p ng-hide="!showHindi" class="hindi-small" style="line-height:1.1">{{topic[1].punjText.fixForHindi()}}</p>
                 </div>
                 <div class="topic-name-topic">
                     <p>{{topic[1].engText}} <sup ng-if="topic[1].subEngText!=''"><b>{{topic[1].subEngText}}</b></sup></p>

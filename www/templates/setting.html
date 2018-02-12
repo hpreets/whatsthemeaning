@@ -6,12 +6,7 @@
   </ion-nav-bar>
   <ion-content class="has-header">
   	<ion-toggle ng-model="data.showTranslit" ng-change="updateTranslit()" toggle-class="toggle-positive">Show Transliteration</ion-toggle>
-  	<label class="item item-input item-select">
-      <div class="input-label">
-        "Start" button starts which quiz
-      </div>
-      <select ng-model="data.startingBani" ng-options="item.value as item.text for (value, item) in data.startingBaniList" ng-change="updateStartingBani()"></select>
-    </label>
+    <ion-toggle ng-model="data.showHindi" ng-change="updateHindi()" toggle-class="toggle-positive">Show Hindi</ion-toggle>
     <ion-toggle ng-model="data.askSerially" ng-change="updateAskSerially()" toggle-class="toggle-positive">Ask Questions Serially</ion-toggle>
     <ion-toggle ng-model="data.learnMode" ng-change="updateLearnMode()" toggle-class="toggle-positive">Learning Mode <br/><label style="font-size:12px">Switching to Learning Mode will allow you <br/>to first understand the meaning of the Tuk <br/>and will then ask you the question based<br/> on that Tuk.</label></ion-toggle>
 

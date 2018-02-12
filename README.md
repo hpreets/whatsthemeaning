@@ -34,3 +34,12 @@ git push -u origin ionicportable <br />
 <br/>**************************<br/>
 To upgrade ionic: npm install -g ionic <br />
 To upgrade node: Download and install
+<br/>**************************<br/>
+To build: ionic build android <br />
+To build and release: ionic build android --release <br />
+To build, release and sign: <br/>
+<ul>
+<li>ionic build android --release</li>
+<li>cd platforms\android</li>
+<li>gradlew assembleRelease</li>
+</ul>

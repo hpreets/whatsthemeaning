@@ -211,3 +211,10 @@ margin:42px auto;
 .btn-disabled, .button-assertive {
   transition: 0.5s round ;
 }
+
+.main-content > div {
+  /* these are the flex items */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

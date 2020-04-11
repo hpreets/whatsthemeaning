@@ -1,4 +1,13 @@
 {
-  "name": "GurbaniBodh",
-  "app_id": ""
+  "name": "gurbanibodh",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic1",
+  "watchPatterns": [
+    "scss/**/*",
+    "www/**/*",
+    "!www/lib/**/*",
+    "!www/**/*.map"
+  ]
 }

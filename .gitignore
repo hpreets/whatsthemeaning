@@ -1,6 +1,54 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
-node_modules/
-platforms/
-plugins/
+*~
+*.sw[mnpcod]
+.tmp
+*.tmp
+*.tmp.*
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+UserInterfaceState.xcuserstate
+$RECYCLE.BIN/
+
+*.log
+log.txt
+npm-debug.log*
+
+/.idea
+/.ionic
+/.sass-cache
+/.sourcemaps
+/.versions
+/.vscode
+/coverage
+/dist
+/hooks
+/node_modules
+/platforms
+/plugins
+/res
+/resources
+/scss
+# /www
+.bowerrc
+.editorconfig
+bower.json
+package-lock.json
+package.json
+bower.json
+ionic.config.json
+gulpfile.js
+www/lib/ionic/version.json
+www/lib/ionic/css/ionic.min.css
+www/lib/ionic/fonts/ionicons.svg
+www/lib/ionic/js/ionic-angular.min.js
+www/lib/ionic/js/ionic.bundle.min.js
+www/lib/ionic/js/ionic.min.js
+www/lib/ionic/js/angular/angular-animate.min.js
+www/lib/ionic/js/angular/angular-resource.min.js
+www/lib/ionic/js/angular/angular-sanitize.min.js
+www/lib/ionic/js/angular/angular.min.js
+www/lib/ionic/js/angular-ui/angular-ui-router.min.js

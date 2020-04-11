@@ -11,35 +11,35 @@
   <div class="progress-bar" >
     <progress max="10" value="{{score}}" class="blue-range blue"></progress>
   </div>
-  <ion-content scrollbar-y="false" class="has-header text-center" style="margin-top:5px; background-color:black">
+  <ion-content scrollbar-y="false" class="has-header text-center main-content" style="margin-top:5px; background-color:black; display: flex; flex-direction: column; align-items: stretch;">
   <!-- wtm-tuk-directive headertxt="qwordStyle"></wtm-tuk-directive><wtm-tuk-directive>000</wtm-tuk-directive -->
   <div id="topOfPage"></div>
-  <div class="reveal-q-animation">
-    <div class="">
+  <div class="reveal-q-animation" style="flex: 1 1 auto; display: flex;">
+    <div class="" style="display: flex; flex-direction: column; flex: 1 1 auto;">
       <!-- - - - - - - - - - - - - TUK - - - - - - - - - - - - -->
-      <div class="item item-text-wrap item-ques-page reveal-o-animation" style="padding:5px" > <!-- ng-if="showTuk" -->
+      <div class="item item-text-wrap item-ques-page reveal-o-animation" style="padding:5px; flex: 1 1 auto; display: flex; justify-content: center; flex-direction: column;" > <!-- ng-if="showTuk" -->
 
-        <span class="punj-large" style="line-height:1.3; font-family: GurbaniAkhar">
+        <span class="punj-large" style="line-height:1.3; font-family: GurbaniAkhar; {{ (!showHindi && !showTranslit) ? 'font-size:180%': ''}} {{ (showHindi && showTranslit) ? 'font-size:120%': ''}}" >
           {{questionPunjParts[0]}} <span style="{{qwordStyle}}">{{wordPunj}}</span> {{questionPunjParts[1]}}
           <span class="item-icon" ng-click="modal.show()" ng-show="shabad"><i class="icon ion-help-circled royal"></i></span>
         </span>
         
         <span ng-hide="!showHindi">
           <br />
-          <span class="hindi-large" style="line-height:1.3; font-family: GurbaniHindi">
+          <span class="hindi-large" style="line-height:1.3; font-family: GurbaniHindi; {{ (showHindi && showTranslit) ? 'font-size:120%': ''}}">
             {{questionPunjParts[0].fixForHindi()}} <span style="{{qwordStyle}}">{{wordPunj.fixForHindi()}}</span> {{questionPunjParts[1].fixForHindi()}}
           </span>
         </span>
 
-        <span ng-hide="!showTranslit">
+        <span ng-hide="!showTranslit" style="{{ (showHindi && showTranslit) ? 'font-size:90%': ''}}">
           <br /> {{questionEngParts[0]}} <span style="{{qwordStyle}}">{{wordEng}}</span> {{questionEngParts[1]}}
         </span>
       </div>
       <!-- - - - - - - - - - - - - WORD - - - - - - - - - - - - -->
-      <div  class="item item-text-wrap item-ques-page reveal-o-animation" style="line-height:1.3;font-size:24px;"> <!-- ng-if="showQuesWord" -->
-        <span class="punj-x-large">{{wordPunj}}</span> 
-        <span ng-hide="!showHindi" class="hindi-x-large">/ {{wordPunj.fixForHindi()}}</span> 
-        <span ng-hide="!showTranslit">/ {{wordEng}}</span>
+      <div  class="item item-text-wrap item-ques-page reveal-o-animation" style="line-height:1.3; font-size:24px;"> <!-- ng-if="showQuesWord" -->
+        <span class="punj-x-large" style="{{ (!showHindi && !showTranslit) ? 'font-size:180%': ''}} {{ (showHindi && showTranslit) ? 'font-size:120%': ''}}">{{wordPunj}}</span> 
+        <span ng-hide="!showHindi" class="hindi-x-large" style="{{ (showHindi && showTranslit) ? 'font-size:120%': ''}}">/ {{wordPunj.fixForHindi()}}</span> 
+        <span ng-hide="!showTranslit" style="{{ (showHindi && showTranslit) ? 'font-size:90%': ''}}"> / {{wordEng}}</span>
       </div>
     </div>
 
@@ -78,27 +78,29 @@
 
     <div class = "" style="">
     <!-- - - - - - - - - - - - - 4 OPTIONS - - - - - - - - - - - - -->
+    <div ng-if="!show4Options" class="reveal-o-animation" style="min-height: 282px;">
+	</div> 
     <div ng-if="show4Options" class="reveal-o-animation" style=""> <!-- ng-if="show4Options" -->
       <div  class="" style="">
-        <button style="font-size:18px; margin:2px;" ng-disabled="fourOptionClass[0]=='btn-disabled'" class="button button-block {{fourOptionClass[0]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[0][0]}}", 0)' >
+        <button style="font-size:18px; min-height: 60px;" ng-disabled="fourOptionClass[0]=='btn-disabled'" class="button button-block {{fourOptionClass[0]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[0][0]}}", 0)' >
           <span class="punj-medium">{{options[0][1]}} / </span>
           <span ng-hide="!showHindi" class="hindi-medium">{{options[0][1].fixForHindi()}} / </span>
           {{options[0][0]}}
         </button> <!-- ng-class="{'button-positive ': correctAnswerIndex != 0}" --><!-- button-block |  -->
 
-        <button style="font-size:18px; margin:2px;" ng-disabled="fourOptionClass[1]=='btn-disabled'" class="button button-block {{fourOptionClass[1]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[1][0]}}", 1)' >
+        <button style="font-size:18px; min-height: 60px;" ng-disabled="fourOptionClass[1]=='btn-disabled'" class="button button-block {{fourOptionClass[1]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[1][0]}}", 1)' >
           <span class="punj-medium">{{options[1][1]}} / </span>
           <span ng-hide="!showHindi" class="hindi-medium">{{options[1][1].fixForHindi()}} / </span>
           {{options[1][0]}}
         </button>
 
-        <button style="font-size:18px; margin:2px;" ng-disabled="fourOptionClass[2]=='btn-disabled'" class="button button-block {{fourOptionClass[2]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[2][0]}}", 2)' >
+        <button style="font-size:18px; min-height: 60px;" ng-disabled="fourOptionClass[2]=='btn-disabled'" class="button button-block {{fourOptionClass[2]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[2][0]}}", 2)' >
           <span class="punj-medium">{{options[2][1]}} / </span>
           <span ng-hide="!showHindi" class="hindi-medium">{{options[2][1].fixForHindi()}} / </span>
           {{options[2][0]}}
         </button>
 
-        <button style="font-size:18px; margin:2px;" ng-disabled="fourOptionClass[3]=='btn-disabled'" class="button button-block {{fourOptionClass[3]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[3][0]}}", 3)' >
+        <button style="font-size:18px; margin:2px; min-height: 60px;" ng-disabled="fourOptionClass[3]=='btn-disabled'" class="button button-block {{fourOptionClass[3]}} ques-option-button" ng-click='goAnswer("{{ques.Id}}", "{{ques.qOpt.Id}}", "{{options[3][0]}}", 3)' >
           <span class="punj-medium">{{options[3][1]}} / </span>
           <span ng-hide="!showHindi" class="hindi-medium">{{options[3][1].fixForHindi()}} / </span>
           {{options[3][0]}}
